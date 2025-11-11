@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceForge AI - Wireframe Specification Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        /* Cover Page */
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+        }
+        
+        .logo-container {
+            margin-bottom: 60px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .logo svg {
+            width: 70px;
+            height: 70px;
+        }
+        
+        .company-name {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 18px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .doc-title {
+            font-size: 64px;
+            font-weight: 800;
+            margin: 80px 0 20px;
+            line-height: 1.2;
+        }
+        
+        .doc-subtitle {
+            font-size: 24px;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 60px;
+        }
+        
+        .doc-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 80px;
+            text-align: left;
+        }
+        
+        .meta-item {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .meta-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+        
+        .meta-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        /* Table of Contents */
+        .toc {
+            margin: 60px 0;
+        }
+        
+        .toc h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 16px;
+        }
+        
+        .toc-list {
+            list-style: none;
+        }
+        
+        .toc-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .toc-item a {
+            text-decoration: none;
+            color: #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            transition: color 0.2s;
+        }
+        
+        .toc-item a:hover {
+            color: #667eea;
+        }
+        
+        .toc-number {
+            font-weight: 600;
+            margin-right: 20px;
+            color: #667eea;
+        }
+        
+        /* Section Headers */
+        h1 {
+            font-size: 42px;
+            color: #667eea;
+            margin: 60px 0 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 16px;
+        }
+        
+        h2 {
+            font-size: 32px;
+            color: #1a1a1a;
+            margin: 40px 0 20px;
+        }
+        
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin: 30px 0 15px;
+        }
+        
+        h4 {
+            font-size: 18px;
+            color: #4b5563;
+            margin: 20px 0 10px;
+        }
+        
+        /* Version Control Table */
+        .version-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .version-table th {
+            background: #667eea;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .version-table td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .version-table tr:hover {
+            background: #f9fafb;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-approved { background: #d1fae5; color: #065f46; }
+        .status-review { background: #fef3c7; color: #92400e; }
+        .status-draft { background: #dbeafe; color: #1e40af; }
+        
+        /* Wireframe Container */
+        .wireframe {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            overflow-x: auto;
+        }
+        
+        .wireframe pre {
+            margin: 0;
+            white-space: pre;
+        }
+        
+        /* Component Spec Table */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .spec-table th {
+            background: #f3f4f6;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .spec-table td {
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        /* Color Palette */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .color-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .color-swatch {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .color-info {
+            padding: 16px;
+            background: white;
+        }
+        
+        .color-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .color-hex {
+            font-size: 12px;
+            color: #6b7280;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* User Flow Diagram */
+        .flow-diagram {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 30px 0;
+        }
+        
+        .flow-step {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 16px 24px;
+            margin: 20px auto;
+            max-width: 400px;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .flow-step::after {
+            content: '↓';
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #667eea;
+        }
+        
+        .flow-step:last-child::after {
+            display: none;
+        }
+        
+        /* API Spec */
+        .api-endpoint {
+            background: #1f2937;
+            color: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        
+        .api-method {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        /* Feature Cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: #ede9fe;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .feature-desc {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        /* Print Styles */
+        @media print {
+            .page {
+                padding: 0;
+                max-width: 100%;
+            }
+            
+            .cover-page {
+                page-break-after: always;
+            }
+            
+            h1, h2 {
+                page-break-after: avoid;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .doc-meta {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .doc-title {
+                font-size: 42px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <div class="logo-container">
+            <div class="logo">
+                <svg viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="35" fill="#667eea"/>
+                    <path d="M35 40 L35 60 L65 50 Z" fill="white"/>
+                    <circle cx="70" cy="30" r="8" fill="#764ba2"/>
+                    <circle cx="75" cy="50" r="6" fill="#764ba2" opacity="0.7"/>
+                    <circle cx="70" cy="70" r="8" fill="#764ba2"/>
+                </svg>
+            </div>
+            <div class="company-name">VoiceForge AI</div>
+            <div class="tagline">Enterprise AI Voice Generation Platform</div>
+        </div>
+        
+        <div class="doc-title">Wireframe Specification</div>
+        <div class="doc-subtitle">Complete UX/UI Design Documentation</div>
+        
+        <div class="doc-meta">
+            <div class="meta-item">
+                <div class="meta-label">Version</div>
+                <div class="meta-value">2.0</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Date</div>
+                <div class="meta-value">November 11, 2025</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Status</div>
+                <div class="meta-value">Approved</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Content -->
+    <div class="page">
+        <!-- Version Control -->
+        <h1>Document Control</h1>
+        
+        <table class="version-table">
+            <thead>
+                <tr>
+                    <th>Version</th>
+                    <th>Date</th>
+                    <th>Author</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0.1</td>
+                    <td>2025-09-15</td>
+                    <td>Sarah Chen, Lead UX Designer</td>
+                    <td>Initial wireframe concepts</td>
+                    <td><span class="status-badge status-draft">Draft</span></td>
+                </tr>
+                <tr>
+                    <td>1.0</td>
+                    <td>2025-10-01</td>
+                    <td>Design Team</td>
+                    <td>Complete wireframes for core features</td>
+                    <td><span class="status-badge status-review">Review</span></td>
+                </tr>
+                <tr>
+                    <td>1.5</td>
+                    <td>2025-10-20</td>
+                    <td>Sarah Chen</td>
+                    <td>Added AI model interaction patterns</td>
+                    <td><span class="status-badge status-review">Review</span></td>
+                </tr>
+                <tr>
+                    <td>2.0</td>
+                    <td>2025-11-11</td>
+                    <td>Product Team</td>
+                    <td>Final approved specification</td>
+                    <td><span class="status-badge status-approved">Approved</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>Table of Contents</h2>
+            <ul class="toc-list">
+                <li class="toc-item">
+                    <a href="#introduction">
+                        <span><span class="toc-number">1.</span> Introduction</span>
+                        <span>3</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#design-system">
+                        <span><span class="toc-number">2.</span> Design System</span>
+                        <span>5</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#user-flows">
+                        <span><span class="toc-number">3.</span> User Flows</span>
+                        <span>8</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#wireframes">
+                        <span><span class="toc-number">4.</span> Wireframe Specifications</span>
+                        <span>12</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#components">
+                        <span><span class="toc-number">5.</span> Component Library</span>
+                        <span>28</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#ai-interactions">
+                        <span><span class="toc-number">6.</span> AI Interaction Patterns</span>
+                        <span>35</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#api-specs">
+                        <span><span class="toc-number">7.</span> API Specifications</span>
+                        <span>42</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#responsive">
+                        <span><span class="toc-number">8.</span> Responsive Behavior</span>
+                        <span>48</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Introduction -->
+        <h1 id="introduction">1. Introduction</h1>
+        
+        <h2>1.1 Purpose</h2>
+        <p>This document provides comprehensive wireframe specifications for <strong>VoiceForge AI</strong>, an enterprise-grade AI voice generation platform that enables users to create realistic, natural-sounding voiceovers using advanced text-to-speech technology.</p>
+        
+        <h2>1.2 Product Overview</h2>
+        <p>VoiceForge AI is a web-based platform similar to ElevenLabs, offering:</p>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#667eea"/>
+                    </svg>
+                </div>
+                <div class="feature-title">AI Voice Cloning</div>
+                <div class="feature-desc">Clone any voice with just 30 seconds of audio sample using advanced neural networks</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="#667eea"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Text-to-Speech</div>
+                <div class="feature-desc">Convert text to natural-sounding speech in 50+ languages with emotion control</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="#667eea"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Voice Library</div>
+                <div class="feature-desc">Access 1000+ pre-made voices across different accents, ages, and styles</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#667eea"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Voice Studio</div>
+                <div class="feature-desc">Fine-tune pitch, speed, emphasis, and pronunciation with advanced controls</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="#667eea"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Analytics Dashboard</div>
+                <div class="feature-desc">Track usage, monitor quality metrics, and manage team collaboration</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="#667eea"/>
+                    </svg>
+                </div>
+                <div class="feature-title">API Integration</div>
+                <div class="feature-desc">RESTful API with SDKs for Python, Node.js, and other popular languages</div>
+            </div>
+        </div>
+
+        <h2>1.3 Target Users</h2>
+        <ul style="margin: 20px 0 20px 40px;">
+            <li><strong>Content Creators</strong>: YouTubers, podcasters, audiobook narrators</li>
+            <li><strong>Enterprise Teams</strong>: Marketing, training, customer support departments</li>
+            <li><strong>Developers</strong>: Building voice-enabled applications</li>
+            <li><strong>Media Companies</strong>: Film studios, advertising agencies, game developers</li>
+        </ul>
+
+        <!-- Design System -->
+        <h1 id="design-system">2. Design System</h1>
+        
+        <h2>2.1 Color Palette</h2>
+        
+        <div class="color-grid">
+            <div class="color-card">
+                <div class="color-swatch" style="background: #667eea;">Primary</div>
+                <div class="color-info">
+                    <div class="color-name">Brand Primary</div>
+                    <div class="color-hex">#667eea</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #764ba2;">Primary Dark</div>
+                <div class="color-info">
+                    <div class="color-name">Brand Secondary</div>
+                    <div class="color-hex">#764ba2</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #10b981;">Success</div>
+                <div class="color-info">
+                    <div class="color-name">Success Green</div>
+                    <div class="color-hex">#10b981</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #f59e0b;">Warning</div>
+                <div class="color-info">
+                    <div class="color-name">Warning Orange</div>
+                    <div class="color-hex">#f59e0b</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #ef4444;">Error</div>
+                <div class="color-info">
+                    <div class="color-name">Error Red</div>
+                    <div class="color-hex">#ef4444</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #1f2937; color: white;">Dark</div>
+                <div class="color-info">
+                    <div class="color-name">Text Primary</div>
+                    <div class="color-hex">#1f2937</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>2.2 Typography</h2>
+        
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Element</th>
+                    <th>Font</th>
+                    <th>Size</th>
+                    <th>Weight</th>
+                    <th>Line Height</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>H1 Heading</td>
+                    <td>Inter</td>
+                    <td>42px</td>
+                    <td>700 (Bold)</td>
+                    <td>52px</td>
+                </tr>
+                <tr>
+                    <td>H2 Heading</td>
+                    <td>Inter</td>
+                    <td>32px</td>
+                    <td>600 (Semibold)</td>
+                    <td>40px</td>
+                </tr>
+                <tr>
+                    <td>H3 Heading</td>
+                    <td>Inter</td>
+                    <td>24px</td>
+                    <td>600 (Semibold)</td>
+                    <td>32px</td>
+                </tr>
+                <tr>
+                    <td>Body Large</td>
+                    <td>Inter</td>
+                    <td>18px</td>
+                    <td>400 (Regular)</td>
+                    <td>28px</td>
+                </tr>
+                <tr>
+                    <td>Body</td>
+                    <td>Inter</td>
+                    <td>16px</td>
+                    <td>400 (Regular)</td>
+                    <td>24px</td>
+                </tr>
+                <tr>
+                    <td>Body Small</td>
+                    <td>Inter</td>
+                    <td>14px</td>
+                    <td>400 (Regular)</td>
+                    <td>20px</td>
+                </tr>
+                <tr>
+                    <td>Caption</td>
+                    <td>Inter</td>
+                    <td>12px</td>
+                    <td>400 (Regular)</td>
+                    <td>16px</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- User Flows -->
+        <h1 id="user-flows">3. User Flows</h1>
+        
+        <h2>3.1 Voice Generation Flow</h2>
+        
+        <div class="flow-diagram">
+            <div class="flow-step">User lands on Dashboard</div>
+            <div class="flow-step">Click "Generate Speech"</div>
+            <div class="flow-step">Select Voice from Library OR Upload Custom Voice</div>
+            <div class="flow-step">Enter Text (max 5000 characters)</div>
+            <div class="flow-step">Adjust Voice Settings (Speed, Pitch, Emotion)</div>
+            <div class="flow-step">Click "Generate" → AI Processing (10-30 seconds)</div>
+            <div class="flow-step">Preview Generated Audio with Waveform</div>
+            <div class="flow-step">Download or Save to Project</div>
+        </div>
+
+        <!-- Wireframes -->
+        <h1 id="wireframes">4. Wireframe Specifications</h1>
+        
+        <h2>4.1 Login Screen</h2>
+        
+        <p><strong>Screen ID:</strong> AUTH-LOGIN-001<br>
+        <strong>Route:</strong> /login<br>
+        <strong>User Role:</strong> All (Unauthenticated)</p>
+        
+        <div class="wireframe">
+            <pre>
+┌─────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│                        [LOGO: VoiceForge AI]                       │
+│                   AI Voice Generation Platform                     │
+│                                                                     │
+│                  ┌──────────────────────────┐                     │
+│                  │                          │                     │
+│                  │  [H2] Welcome Back       │                     │
+│                  │                          │                     │
+│                  │  ┌────────────────────┐  │                     │
+│                  │  │ 📧 Email           │  │                     │
+│                  │  │ [Input Field]      │  │                     │
+│                  │  └────────────────────┘  │                     │
+│                  │                          │                     │
+│                  │  ┌────────────────────┐  │                     │
+│                  │  │ 🔒 Password        │  │                     │
+│                  │  │ [Input Field]      │  │                     │
+│                  │  │              [👁]   │  │                     │
+│                  │  └────────────────────┘  │                     │
+│                  │                          │                     │
+│                  │  ☐ Remember Me          │                     │
+│                  │                          │                     │
+│                  │  ┌────────────────────┐  │                     │
+│                  │  │   SIGN IN          │  │                     │
+│                  │  └────────────────────┘  │                     │
+│                  │                          │                     │
+│                  │  [Forgot Password?]     │                     │
+│                  │                          │                     │
+│                  │  ─── OR ───             │                     │
+│                  │                          │                     │
+│                  │  [🔵 Continue with SSO] │                     │
+│                  │                          │                     │
+│                  └──────────────────────────┘                     │
+│                                                                     │
+│              © 2025 VoiceForge AI | Terms | Privacy               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+            </pre>
+        </div>
+
+        <h3>Component Specifications</h3>
+        
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Component ID</th>
+                    <th>Type</th>
+                    <th>Behavior</th>
+                    <th>Validation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>INPUT-EMAIL-001</td>
+                    <td>Email Input</td>
+                    <td>Auto-lowercase, trim spaces</td>
+                    <td>Email format required</td>
+                </tr>
+                <tr>
+                    <td>INPUT-PASS-001</td>
+                    <td>Password Input</td>
+                    <td>Masked, toggle visibility</td>
+                    <td>Min 8 characters</td>
+                </tr>
+                <tr>
+                    <td>BTN-SIGNIN-001</td>
+                    <td>Primary Button</td>
+                    <td>Submit form, show loading</td>
+                    <td>All fields required</td>
+                </tr>
+                <tr>
+                    <td>BTN-SSO-001</td>
+                    <td>Secondary Button</td>
+                    <td>OAuth 2.0 flow</td>
+                    <td>N/A</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>4.2 Dashboard - Main View</h2>
+        
+        <p><strong>Screen ID:</strong> DASH-MAIN-001<br>
+        <strong>Route:</strong> /dashboard<br>
+        <strong>User Role:</strong> All Authenticated Users</p>
+        
+        <div class="wireframe">
+            <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ ☰ VoiceForge AI    [Dashboard] [Projects] [Voices] [API]    🔔(3)  👤 Sarah   │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                 │
+│  [H1] Dashboard                                            📅 Nov 11, 2025    │
+│                                                                                 │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
+│  │ 🎙️ Total    │  │ ⏱️ Minutes  │  │ 📊 Projects │  │ 🌟 Voices   │         │
+│  │ Generations │  │ Generated   │  │ Active      │  │ Created     │         │
+│  │             │  │             │  │             │  │             │         │
+│  │    1,234    │  │   45,678    │  │      24     │  │      8      │         │
+│  │  ↗ +23%     │  │  ↗ +15%     │  │  ↗ +12%     │  │  → 0%       │         │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘         │
+│                                                                                 │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│                                                                                 │
+│  [H2] Quick Actions                                                            │
+│                                                                                 │
+│  ┌───────────────────┐  ┌───────────────────┐  ┌───────────────────┐         │
+│  │ 🎤 Generate Speech│  │ ➕ Create Voice   │  │ 📁 New Project    │         │
+│  │                   │  │                   │  │                   │         │
+│  │ Transform text    │  │ Clone any voice   │  │ Organize your     │         │
+│  │ to natural voice  │  │ in 30 seconds     │  │ audio files       │         │
+│  │                   │  │                   │  │                   │         │
+│  │ [Get Started →]   │  │ [Upload Audio →]  │  │ [Create →]        │         │
+│  └───────────────────┘  └───────────────────┘  └───────────────────┘         │
+│                                                                                 │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│                                                                                 │
+│  [H2] Recent Projects                                      [View All →]        │
+│                                                                                 │
+│  ┌───────────────────────────────────────────────────────────────────────┐   │
+│  │ 📁 Marketing Campaign Q4          Modified: 2 hours ago      [▶️ ⋮]   │   │
+│  │    15 audio files • 2.3 GB • Voice: "Professional Sarah"              │   │
+│  ├───────────────────────────────────────────────────────────────────────┤   │
+│  │ 📁 Podcast Series - Episode 12    Modified: Yesterday        [▶️ ⋮]   │   │
+│  │    8 audio files • 1.1 GB • Voice: "Narrator Mark"                    │   │
+│  ├───────────────────────────────────────────────────────────────────────┤   │
+│  │ 📁 Training Videos                Modified: Nov 8            [▶️ ⋮]   │   │
+│  │    32 audio files • 4.5 GB • Voice: "Instructor Emma"                 │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│                                                                                 │
+│  [H2] Usage This Month                                                         │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │                                                                          │ │
+│  │  50K ┤                                          •                        │ │
+│  │      │                                      •       •                    │ │
+│  │  40K ┤                  •           •   •               •                │ │
+│  │      │          •   •       •                               •            │ │
+│  │  30K ┤      •                                                   •        │ │
+│  │      │  •                                                           •    │ │
+│  │  20K ┤                                                                   │ │
+│  │      └──────────────────────────────────────────────────────────────    │ │
+│  │       Oct15  Oct20  Oct25  Oct30  Nov5  Nov10  Nov15                    │ │
+│  │                                                                          │ │
+│  │  ━━ Characters Processed    ━━ API Calls    ━━ Minutes Generated       │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+            </pre>
+        </div>
+
+        <h2>4.3 Voice Generation Studio</h2>
+        
+        <p><strong>Screen ID:</strong> GEN-STUDIO-001<br>
+        <strong>Route:</strong> /generate<br>
+        <strong>User Role:</strong> All Authenticated Users</p>
+        
+        <div class="wireframe">
+            <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ ← Back to Dashboard                                         [Save Draft] [Help] │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                 │
+│  [H1] Generate Speech                                                          │
+│                                                                                 │
+│  ┌─────────────────────────────────────┐  ┌────────────────────────────────┐  │
+│  │                                     │  │                                │  │
+│  │  [H3] 1. Select Voice               │  │  [H3] Voice Preview            │  │
+│  │                                     │  │                                │  │
+│  │  ┌───────────────────────────────┐ │  │  ┌──────────────────────────┐ │  │
+│  │  │ 🔍 Search voices...           │ │  │  │  👤 Professional Sarah   │ │  │
+│  │  └───────────────────────────────┘ │  │  │                          │ │  │
+│  │                                     │  │  │  Age: 30s                │ │  │
+│  │  [All] [Female] [Male] [Custom]    │  │  │  Accent: American        │ │  │
+│  │                                     │  │  │  Style: Professional     │ │  │
+│  │  ┌─────────────────────────────┐   │  │  │                          │ │  │
+│  │  │ ✓ Professional Sarah        │   │  │  │  [▶️ Play Sample]        │ │  │
+│  │  │   Female • American • Clear │   │  │  │                          │ │  │
+│  │  │   ⭐⭐⭐⭐⭐ (4.8)              │   │  │  │  "Hello, this is a...  │ │  │
+│  │  └─────────────────────────────┘   │  │  │   sample of my voice"    │ │  │
+│  │  ┌─────────────────────────────┐   │  │  └──────────────────────────┘ │  │
+│  │  │   Narrator Mark             │   │  │                                │  │
+│  │  │   Male • British • Deep     │   │  │  [Change Voice]                │  │
+│  │  │   ⭐⭐⭐⭐⭐ (4.9)              │   │  │                                │  │
+│  │  └─────────────────────────────┘   │  └────────────────────────────────┘  │
+│  │  ┌─────────────────────────────┐   │                                      │
+│  │  │   Instructor Emma           │   │                                      │
+│  │  │   Female • Neutral • Warm   │   │                                      │
+│  │  │   ⭐⭐⭐⭐☆ (4.6)              │   │                                      │
+│  │  └─────────────────────────────┘   │                                      │
+│  │                                     │                                      │
+│  │  [+ Upload Custom Voice]            │                                      │
+│  │                                     │                                      │
+│  └─────────────────────────────────────┘                                      │
+│                                                                                 │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│                                                                                 │
+│  [H3] 2. Enter Your Text                                    Character: 0/5000  │
+│                                                                                 │
+│  ┌───────────────────────────────────────────────────────────────────────────┐ │
+│  │                                                                           │ │
+│  │  Type or paste your text here...                                         │ │
+│  │                                                                           │ │
+│  │  You can use SSML tags for advanced control:                             │ │
+│  │  <break time="1s"/> for pauses                                           │ │
+│  │  <emphasis level="strong">word</emphasis> for emphasis                   │ │
+│  │  <prosody rate="slow">text</prosody> for speed                           │ │
+│  │                                                                           │ │
+│  │                                                                           │ │
+│  │                                                                           │ │
+│  │                                                                           │ │
+│  └───────────────────────────────────────────────────────────────────────────┘ │
+│                                                                                 │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│                                                                                 │
+│  [H3] 3. Adjust Settings                                                       │
+│                                                                                 │
+│  ┌─────────────────────────────┐  ┌─────────────────────────────┐             │
+│  │  Speed                      │  │  Pitch                      │             │
+│  │  ├───────●─────────┤  1.0x  │  │  ├───────●─────────┤  0%   │             │
+│  │  0.5x          2.0x         │  │  -50%          +50%         │             │
+│  └─────────────────────────────┘  └─────────────────────────────┘             │
+│                                                                                 │
+│  ┌─────────────────────────────┐  ┌─────────────────────────────┐             │
+│  │  Stability                  │  │  Clarity                    │             │
+│  │  ├───────●─────────┤  50%   │  │  ├───────────●───┤  75%    │             │
+│  │  More Variable  More Stable │  │  Soft          Crisp        │             │
+│  └─────────────────────────────┘  └─────────────────────────────┘             │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐  │
+│  │  Emotion: [Neutral ▼]                                                   │  │
+│  │  Format:  [MP3 ▼]  Quality: [High ▼]  Sample Rate: [44.1kHz ▼]        │  │
+│  └─────────────────────────────────────────────────────────────────────────┘  │
+│                                                                                 │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐  │
+│  │                     [🎤 Generate Speech]                                │  │
+│  │                                                                         │  │
+│  │  Estimated time: ~15 seconds • Cost: 125 credits                       │  │
+│  └─────────────────────────────────────────────────────────────────────────┘  │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+            </pre>
+        </div>
+
+        <h2>4.4 AI Generation Progress</h2>
+        
+        <div class="wireframe">
+            <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                 │
+│                          [H2] Generating Your Audio...                         │
+│                                                                                 │
+│                    ┌───────────────────────────────────────┐                   │
+│                    │  🎙️                                   │                   │
+│                    │                                       │                   │
+│                    │  Processing with AI Model v3.5        │                   │
+│                    │                                       │                   │
+│                    │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  60%           │                   │
+│                    │                                       │                   │
+│                    │  Step 3 of 4: Applying voice style   │                   │
+│                    │                                       │                   │
+│                    │  Estimated time remaining: 8 seconds  │                   │
+│                    │                                       │                   │
+│                    └───────────────────────────────────────┘                   │
+│                                                                                 │
+│                             [Cancel Generation]                                │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+            </pre>
+        </div>
+
+        <h2>4.5 Audio Preview & Download</h2>
+        
+        <div class="wireframe">
+            <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│  [H2] ✓ Audio Generated Successfully!                          [Generate New]  │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐  │
+│  │  Professional Sarah • Duration: 0:45 • Size: 1.2 MB                     │  │
+│  │                                                                         │  │
+│  │  ┌───────────────────────────────────────────────────────────────────┐ │  │
+│  │  │  [▶️]  ━━━━━━━●━━━━━━━━━━━━━━━━━━━━━━━━  0:15 / 0:45  [🔊]  │  │  │
+│  │  └───────────────────────────────────────────────────────────────────┘ │  │
+│  │                                                                         │  │
+│  │  Waveform:                                                              │  │
+│  │  ┌───────────────────────────────────────────────────────────────────┐ │  │
+│  │  │ ▁▂▃▅▇█▇▅▃▂▁ ▁▂▃▅▇█▇▅▃▂▁ ▁▂▃▅▇█▇▅▃▂▁ ▁▂▃▅▇█▇▅▃▂▁ ▁▂▃▅▇█▇▅▃▂ │ │  │
+│  │  │ ▁▂▃▅▇█▇▅▃▂▁ ▁▂▃▅▇█▇▅▃▂▁ ▁▂▃▅▇█▇▅▃▂▁ ▁▂▃▅▇█▇▅▃▂▁ ▁▂▃▅▇█▇▅▃▂ │ │  │
+│  │  └───────────────────────────────────────────────────────────────────┘ │  │
+│  │                                                                         │  │
+│  │  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐    │  │
+│  │  │ 💾 Download      │  │ 💾 Save to Project│  │ 📤 Share Link    │    │  │
+│  │  └──────────────────┘  └──────────────────┘  └──────────────────┘    │  │
+│  │                                                                         │  │
+│  └─────────────────────────────────────────────────────────────────────────┘  │
+│                                                                                 │
+│  [H3] Generation Details                                                       │
+│                                                                                 │
+│  Voice Model: Professional Sarah v2.1                                          │
+│  Text Length: 342 characters                                                   │
+│  Processing Time: 14.2 seconds                                                 │
+│  Quality: High (192 kbps MP3)                                                  │
+│  Credits Used: 125                                                             │
+│  Generated: Nov 11, 2025 at 10:45 AM                                          │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐  │
+│  │  [🔄 Regenerate with Different Settings]                                │  │
+│  └─────────────────────────────────────────────────────────────────────────┘  │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+            </pre>
+        </div>
+
+        <!-- AI Interactions -->
+        <h1 id="ai-interactions">6. AI Interaction Patterns</h1>
+        
+        <h2>6.1 Voice Cloning Workflow</h2>
+        
+        <div class="flow-diagram">
+            <div class="flow-step">Upload Audio Sample (min 30 seconds)</div>
+            <div class="flow-step">AI Analyzes Voice Characteristics</div>
+            <div class="flow-step">Processing: Extracting pitch, tone, accent</div>
+            <div class="flow-step">Model Training (2-5 minutes)</div>
+            <div class="flow-step">Quality Check & Preview</div>
+            <div class="flow-step">Voice Added to Library</div>
+        </div>
+
+        <h2>6.2 AI Processing States</h2>
+        
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>State</th>
+                    <th>Visual Indicator</th>
+                    <th>User Message</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Initializing</td>
+                    <td>Spinner animation</td>
+                    <td>"Preparing AI model..."</td>
+                    <td>1-2 seconds</td>
+                </tr>
+                <tr>
+                    <td>Processing</td>
+                    <td>Progress bar with %</td>
+                    <td>"Generating speech... Step 2 of 4"</td>
+                    <td>10-30 seconds</td>
+                </tr>
+                <tr>
+                    <td>Finalizing</td>
+                    <td>Animated checkmark</td>
+                    <td>"Applying final touches..."</td>
+                    <td>2-3 seconds</td>
+                </tr>
+                <tr>
+                    <td>Complete</td>
+                    <td>Green checkmark</td>
+                    <td>"✓ Audio generated successfully!"</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Error</td>
+                    <td>Red X icon</td>
+                    <td>"Generation failed. Please try again."</td>
+                    <td>N/A</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>6.3 Real-time Feedback Mechanisms</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-title">Quality Indicators</div>
+                <div class="feature-desc">Real-time display of voice quality metrics: Clarity (85%), Naturalness (92%), Emotion Match (78%)</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-title">Character Counter</div>
+                <div class="feature-desc">Live character count with color coding: Green (0-1000), Yellow (1000-3000), Orange (3000-5000)</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-title">Cost Estimator</div>
+                <div class="feature-desc">Dynamic credit calculation based on text length, voice model, and quality settings</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-title">Preview Waveform</div>
+                <div class="feature-desc">Visual representation of audio with interactive scrubbing and zoom controls</div>
+            </div>
+        </div>
+
+        <!-- API Specifications -->
+        <h1 id="api-specs">7. API Specifications</h1>
+        
+        <h2>7.1 Authentication Endpoint</h2>
+        
+        <div class="api-endpoint">
+            <div><span class="api-method">POST</span> /api/v1/auth/login</div>
+            <br>
+            <strong>Request Body:</strong>
+            <pre>{
+  "email": "user@example.com",
+  "password": "SecurePass123!"
+}</pre>
+            <br>
+            <strong>Success Response (200):</strong>
+            <pre>{
+  "success": true,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "usr_abc123",
+    "name": "Sarah Chen",
+    "email": "sarah@example.com",
+    "role": "premium",
+    "credits_remaining": 5000
+  }
+}</pre>
+        </div>
+
+        <h2>7.2 Voice Generation Endpoint</h2>
+        
+        <div class="api-endpoint">
+            <div><span class="api-method">POST</span> /api/v1/generate/speech</div>
+            <br>
+            <strong>Request Headers:</strong>
+            <pre>Authorization: Bearer {token}
+Content-Type: application/json</pre>
+            <br>
+            <strong>Request Body:</strong>
+            <pre>{
+  "text": "Hello, this is a test of the voice generation system.",
+  "voice_id": "voice_sarah_professional_v2",
+  "settings": {
+    "speed": 1.0,
+    "pitch": 0,
+    "stability": 0.5,
+    "clarity": 0.75,
+    "emotion": "neutral"
+  },
+  "output_format": "mp3",
+  "quality": "high",
+  "sample_rate": 44100
+}</pre>
+            <br>
+            <strong>Success Response (200):</strong>
+            <pre>{
+  "success": true,
+  "audio_id": "aud_xyz789",
+  "audio_url": "https://cdn.voiceforge.ai/audio/aud_xyz789.mp3",
+  "duration_seconds": 45.2,
+  "file_size_bytes": 1258291,
+  "credits_used": 125,
+  "processing_time_ms": 14230,
+  "metadata": {
+    "voice_name": "Professional Sarah",
+    "text_length": 342,
+    "generated_at": "2025-11-11T10:45:00Z"
+  }
+}</pre>
+        </div>
+
+        <h2>7.3 Voice Library Endpoint</h2>
+        
+        <div class="api-endpoint">
+            <div><span class="api-method">GET</span> /api/v1/voices?category=female&accent=american</div>
+            <br>
+            <strong>Success Response (200):</strong>
+            <pre>{
+  "success": true,
+  "voices": [
+    {
+      "id": "voice_sarah_professional_v2",
+      "name": "Professional Sarah",
+      "gender": "female",
+      "age_range": "30s",
+      "accent": "american",
+      "style": "professional",
+      "rating": 4.8,
+      "sample_url": "https://cdn.voiceforge.ai/samples/sarah.mp3",
+      "preview_text": "Hello, this is a sample of my voice.",
+      "tags": ["clear", "warm", "corporate", "trustworthy"]
+    }
+  ],
+  "total_count": 248,
+  "page": 1,
+  "per_page": 20
+}</pre>
+        </div>
+
+        <h2>7.4 Voice Cloning Endpoint</h2>
+        
+        <div class="api-endpoint">
+            <div><span class="api-method">POST</span> /api/v1/voices/clone</div>
+            <br>
+            <strong>Request Body (multipart/form-data):</strong>
+            <pre>audio_file: [Binary audio file]
+voice_name: "My Custom Voice"
+description: "Professional male voice with British accent"
+tags: ["male", "british", "formal"]</pre>
+            <br>
+            <strong>Success Response (202 Accepted):</strong>
+            <pre>{
+  "success": true,
+  "job_id": "job_clone_abc123",
+  "status": "processing",
+  "message": "Voice cloning initiated. This may take 2-5 minutes.",
+  "estimated_completion": "2025-11-11T10:50:00Z",
+  "status_url": "/api/v1/voices/clone/job_clone_abc123/status"
+}</pre>
+        </div>
+
+        <!-- Responsive Design -->
+        <h1 id="responsive">8. Responsive Behavior</h1>
+        
+        <h2>8.1 Breakpoint Strategy</h2>
+        
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Breakpoint</th>
+                    <th>Width</th>
+                    <th>Grid Columns</th>
+                    <th>Layout Changes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mobile</td>
+                    <td>320px - 767px</td>
+                    <td>4 columns</td>
+                    <td>Single column stack, hamburger menu, bottom nav</td>
+                </tr>
+                <tr>
+                    <td>Tablet</td>
+                    <td>768px - 1023px</td>
+                    <td>8 columns</td>
+                    <td>2-column grid, collapsible sidebar</td>
+                </tr>
+                <tr>
+                    <td>Desktop</td>
+                    <td>1024px - 1439px</td>
+                    <td>12 columns</td>
+                    <td>Full layout, persistent sidebar</td>
+                </tr>
+                <tr>
+                    <td>Large Desktop</td>
+                    <td>1440px+</td>
+                    <td>12 columns (max 1440px)</td>
+                    <td>Centered container, increased padding</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>8.2 Mobile Optimizations</h2>
+        
+        <ul style="margin: 20px 0 20px 40px;">
+            <li><strong>Touch Targets:</strong> Minimum 44x44px for all interactive elements</li>
+            <li><strong>Gesture Support:</strong> Swipe for navigation, pinch-to-zoom on waveforms</li>
+            <li><strong>Audio Controls:</strong> Native mobile audio player integration</li>
+            <li><strong>File Upload:</strong> Direct camera/microphone access for voice cloning</li>
+            <li><strong>Offline Support:</strong> Service workers for draft saving</li>
+            <li><strong>Performance:</strong> Lazy loading, image optimization, code splitting</li>
+        </ul>
+
+        <!-- Component Library -->
+        <h1 id="components">5. Component Library</h1>
+        
+        <h2>5.1 Button Components</h2>
+        
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Usage</th>
+                    <th>Style</th>
+                    <th>States</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Primary Button</td>
+                    <td>Main actions (Generate, Save, Submit)</td>
+                    <td>Purple gradient bg, white text, rounded-lg</td>
+                    <td>Default, Hover, Active, Loading, Disabled</td>
+                </tr>
+                <tr>
+                    <td>Secondary Button</td>
+                    <td>Supporting actions (Cancel, Back)</td>
+                    <td>White bg, gray border, gray text</td>
+                    <td>Default, Hover, Active, Disabled</td>
+                </tr>
+                <tr>
+                    <td>Text Button</td>
+                    <td>Tertiary actions (Learn more, View details)</td>
+                    <td>No bg, purple text, underline on hover</td>
+                    <td>Default, Hover, Active</td>
+                </tr>
+                <tr>
+                    <td>Icon Button</td>
+                    <td>Single-action icons (Play, Delete, Share)</td>
+                    <td>Circle bg, icon only, tooltip</td>
+                    <td>Default, Hover, Active, Disabled</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>5.2 Input Components</h2>
+        
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Description</th>
+                    <th>Validation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Text Input</td>
+                    <td>Single-line text entry with label and placeholder</td>
+                    <td>Real-time validation, error messages below</td>
+                </tr>
+                <tr>
+                    <td>Text Area</td>
+                    <td>Multi-line text with character counter</td>
+                    <td>Max length, auto-resize, word count</td>
+                </tr>
+                <tr>
+                    <td>Select Dropdown</td>
+                    <td>Single selection from list with search</td>
+                    <td>Required field validation</td>
+                </tr>
+                <tr>
+                    <td>File Upload</td>
+                    <td>Drag-and-drop area with progress indicator</td>
+                    <td>File type, size validation</td>
+                </tr>
+                <tr>
+                    <td>Range Slider</td>
+                    <td>Numeric value selection with visual feedback</td>
+                    <td>Min/max bounds, step increments</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>5.3 Card Components</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-title">Stats Card</div>
+                <div class="feature-desc">Displays key metrics with icon, value, trend indicator, and optional sparkline chart</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-title">Voice Card</div>
+                <div class="feature-desc">Shows voice preview with play button, ratings, tags, and sample text</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-title">Project Card</div>
+                <div class="feature-desc">Lists project details with thumbnail, file count, size, and action menu</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-title">Notification Card</div>
+                <div class="feature-desc">Displays system alerts with icon, message, timestamp, and dismiss action</div>
+            </div>
+        </div>
+
+        <!-- Accessibility -->
+        <h1>9. Accessibility Requirements</h1>
+        
+        <h2>9.1 WCAG 2.1 Compliance</h2>
+        
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Criterion</th>
+                    <th>Level</th>
+                    <th>Implementation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Color Contrast</td>
+                    <td>AA</td>
+                    <td>4.5:1 for text, 3:1 for large text and UI components</td>
+                </tr>
+                <tr>
+                    <td>Keyboard Navigation</td>
+                    <td>A</td>
+                    <td>All functions accessible via keyboard, visible focus indicators</td>
+                </tr>
+                <tr>
+                    <td>Screen Reader Support</td>
+                    <td>A</td>
+                    <td>ARIA labels, roles, live regions for dynamic content</td>
+                </tr>
+                <tr>
+                    <td>Captions & Transcripts</td>
+                    <td>A</td>
+                    <td>Text alternatives for all audio content</td>
+                </tr>
+                <tr>
+                    <td>Resize Text</td>
+                    <td>AA</td>
+                    <td>Content readable at 200% zoom without horizontal scroll</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>9.2 Assistive Technology Support</h2>
+        
+        <ul style="margin: 20px 0 20px 40px;">
+            <li><strong>Screen Readers:</strong> Full NVDA, JAWS, VoiceOver compatibility</li>
+            <li><strong>Voice Control:</strong> Dragon NaturallySpeaking support</li>
+            <li><strong>Switch Access:</strong> Switch navigation for motor disabilities</li>
+            <li><strong>High Contrast Mode:</strong> Windows high contrast theme support</li>
+            <li><strong>Reduced Motion:</strong> Respect prefers-reduced-motion setting</li>
+        </ul>
+
+        <!-- Technical Implementation -->
+        <h1>10. Technical Implementation Notes</h1>
+        
+        <h2>10.1 Frontend Stack</h2>
+        
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Technology</th>
+                    <th>Version</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>React</td>
+                    <td>18.2+</td>
+                    <td>UI framework with hooks and context</td>
+                </tr>
+                <tr>
+                    <td>TypeScript</td>
+                    <td>5.0+</td>
+                    <td>Type safety and better DX</td>
+                </tr>
+                <tr>
+                    <td>Tailwind CSS</td>
+                    <td>3.3+</td>
+                    <td>Utility-first styling</td>
+                </tr>
+                <tr>
+                    <td>Zustand</td>
+                    <td>4.4+</td>
+                    <td>Global state management</td>
+                </tr>
+                <tr>
+                    <td>React Query</td>
+                    <td>5.0+</td>
+                    <td>Server state and caching</td>
+                </tr>
+                <tr>
+                    <td>Wavesurfer.js</td>
+                    <td>7.0+</td>
+                    <td>Audio waveform visualization</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>10.2 Performance Targets</h2>
+        
+        <ul style="margin: 20px 0 20px 40px;">
+            <li><strong>First Contentful Paint (FCP):</strong> < 1.5 seconds</li>
+            <li><strong>Largest Contentful Paint (LCP):</strong> < 2.5 seconds</li>
+            <li><strong>Time to Interactive (TTI):</strong> < 3.5 seconds</li>
+            <li><strong>Cumulative Layout Shift (CLS):</strong> < 0.1</li>
+            <li><strong>First Input Delay (FID):</strong> < 100ms</li>
+        </ul>
+
+        <!-- Appendix -->
+        <h1>11. Appendix</h1>
+        
+        <h2>11.1 Glossary</h2>
+        
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Voice Cloning</td>
+                    <td>AI process of replicating a person's unique voice characteristics from audio samples</td>
+                </tr>
+                <tr>
+                    <td>TTS</td>
+                    <td>Text-to-Speech: Converting written text into spoken audio</td>
+                </tr>
+                <tr>
+                    <td>SSML</td>
+                    <td>Speech Synthesis Markup Language: XML-based markup for controlling voice output</td>
+                </tr>
+                <tr>
+                    <td>Waveform</td>
+                    <td>Visual representation of audio signal amplitude over time</td>
+                </tr>
+                <tr>
+                    <td>Prosody</td>
+                    <td>Patterns of rhythm, stress, and intonation in speech</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>11.2 References</h2>
+        
+        <ul style="margin: 20px 0 20px 40px;">
+            <li>Material Design 3 Guidelines: https://m3.material.io</li>
+            <li>WCAG 2.1 Standards: https://www.w3.org/WAI/WCAG21</li>
+            <li>Web Audio API Documentation: https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API</li>
+            <li>React Best Practices: https://react.dev</li>
+            <li>Tailwind CSS Documentation: https://tailwindcss.com</li>
+        </ul>
+
+        <h2>11.3 Document Approval</h2>
+        
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>Name</th>
+                    <th>Signature</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Product Manager</td>
+                    <td>Michael Torres</td>
+                    <td>_________________</td>
+                    <td>Nov 11, 2025</td>
+                </tr>
+                <tr>
+                    <td>Lead UX Designer</td>
+                    <td>Sarah Chen</td>
+                    <td>_________________</td>
+                    <td>Nov 11, 2025</td>
+                </tr>
+                <tr>
+                    <td>Engineering Lead</td>
+                    <td>David Kumar</td>
+                    <td>_________________</td>
+                    <td>Nov 11, 2025</td>
+                </tr>
+                <tr>
+                    <td>CTO</td>
+                    <td>Jennifer Wu</td>
+                    <td>_________________</td>
+                    <td>Nov 11, 2025</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 80px; padding-top: 40px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280;">
+            <p><strong>VoiceForge AI - Wireframe Specification Document</strong></p>
+            <p>Version 2.0 | November 11, 2025</p>
+            <p>Confidential and Proprietary</p>
+            <p style="margin-top: 20px;">© 2025 VoiceForge AI. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Print functionality
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                window.print();
+            }
+        });
+        
+        // Smooth scroll for TOC links
+        document.querySelectorAll('.toc-list a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
