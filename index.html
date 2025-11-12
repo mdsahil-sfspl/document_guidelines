@@ -1,305 +1,263 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="auto">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sampurna IT Documentation Hub</title>
-
-  <!-- Company Logo (favicon + header) -->
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Sampurna • Documentation Portal</title>
   <link rel="icon" href="https://raw.githubusercontent.com/mdsahil-sfspl/document_guidelines/main/Sampurna%20logo%20final%20without%20tagline%20png(2).png">
-
   <style>
     :root{
-      --bg: #0a1224;
-      --bg-grad-1: #0a1224;
-      --bg-grad-2: #173b6c;
-      --text: #ffffff;
-      --muted: rgba(255,255,255,.75);
-      --card: rgba(255,255,255,.10);
-      --card-border: rgba(255,255,255,.20);
-      --accent: #ffd700;
-      --shadow: 0 8px 24px rgba(0,0,0,.35);
-      --glow: 0 12px 26px rgba(93, 156, 255, .35);
+      --bg-1:#0b1226; --bg-2:#133a6b; --bg-3:#0d2346;
+      --text:#ffffff; --muted:rgba(255,255,255,0.75);
+      --card:rgba(255,255,255,.09); --card-bd:rgba(255,255,255,.18);
+      --accent:#3aa0ff; --accent-2:#ffd100;
+      --shadow:0 12px 40px rgba(0,0,0,.45); --glow:0 20px 50px rgba(58,160,255,.25);
     }
     [data-theme="light"]{
-      --bg: #f6f8fc;
-      --bg-grad-1: #ffffff;
-      --bg-grad-2: #e8f0ff;
-      --text: #0c1222;
-      --muted: rgba(12,18,34,.7);
-      --card: rgba(12,18,34,.04);
-      --card-border: rgba(12,18,34,.10);
-      --accent: #0b5cff;
-      --shadow: 0 8px 24px rgba(0,0,0,.08);
-      --glow: 0 12px 26px rgba(11,92,255,.22);
+      --bg-1:#f4f7ff; --bg-2:#e9f1ff; --bg-3:#ffffff;
+      --text:#0b1226; --muted:rgba(11,18,38,0.72);
+      --card:rgba(11,18,38,.04); --card-bd:rgba(11,18,38,.12);
+      --accent:#0b5cff; --accent-2:#ff8c00;
+      --shadow:0 12px 40px rgba(0,0,0,.08); --glow:0 20px 50px rgba(11,92,255,.18);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0;
-      color:var(--text);
-      background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2));
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
+      margin:0;color:var(--text);
+      background: radial-gradient(1200px 800px at 10% -10%, var(--bg-2), transparent 60%),
+                  radial-gradient(1200px 800px at 110% 110%, var(--bg-2), transparent 60%),
+                  linear-gradient(135deg, var(--bg-1), var(--bg-3));
+      min-height:100vh; display:flex; align-items:stretch; justify-content:center;
     }
 
-    .container{max-width:1100px;margin:0 auto;padding:1rem 1.25rem 3rem}
-
-    /* Header */
+    .wrap{width:100%; max-width:1200px; margin:auto; padding:24px}
     header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:1rem;
-      padding:1rem 0 0.5rem;
+      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px;
     }
-    .brand{
-      display:flex;align-items:center;gap:.75rem;
-    }
-    .brand img{
-      height:44px;width:auto;border-radius:10px;background:#fff;object-fit:contain;
-      box-shadow: var(--shadow);
-    }
-    .title{
-      line-height:1.1;
-    }
-    .title h1{
-      margin:0;font-size:1.8rem;font-weight:800;
-    }
-    .title p{
-      margin:.2rem 0 0;color:var(--muted);font-size:.95rem;
-    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand img{height:44px;width:auto;border-radius:10px;background:#fff;box-shadow:var(--shadow)}
+    h1{margin:0;font-size:1.65rem;font-weight:800;line-height:1.1}
+    .sub{color:var(--muted); font-size:.95rem}
 
-    /* Theme Toggle */
-    .toggle{
-      display:flex;align-items:center;gap:.5rem;
-    }
+    .toggle{display:flex; align-items:center; gap:8px}
     .toggle button{
-      border:1px solid var(--card-border);
-      background:var(--card);
-      color:var(--text);
-      padding:.55rem .9rem;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:600;
-      transition:transform .15s ease, background .25s ease, border-color .25s ease;
+      border:1px solid var(--card-bd); background:var(--card);
+      color:var(--text); padding:.55rem .9rem; border-radius:12px;
+      font-weight:700; cursor:pointer; transition:transform .15s ease, background .2s ease, border-color .2s ease;
       backdrop-filter: blur(10px);
     }
     .toggle button:hover{transform:translateY(-1px)}
-    .toggle button:active{transform:translateY(0)}
     .toggle small{color:var(--muted)}
 
-    /* Grid */
-    main{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-      gap:1.2rem;
-      margin-top:1.2rem;
+    /* Hero layout similar to “portal” pages: left panel visual, right content card */
+    .hero{
+      display:grid; grid-template-columns: 1.2fr 1fr; gap:22px;
+    }
+    @media (max-width: 980px){ .hero{grid-template-columns:1fr} }
+
+    .panel{
+      position:relative; border-radius:18px; overflow:hidden; min-height:360px;
+      border:1px solid var(--card-bd); background:var(--card); box-shadow:var(--shadow);
+    }
+    .panel::before{
+      content:""; position:absolute; inset:-20%;
+      background: radial-gradient(600px 350px at 20% 20%, rgba(58,160,255,.28), transparent 60%),
+                  radial-gradient(600px 350px at 80% 80%, rgba(255,209,0,.22), transparent 60%);
+      filter: blur(6px);
+    }
+    .panelContent{
+      position:relative; z-index:1; padding:28px;
+      display:flex; flex-direction:column; justify-content:flex-end; height:100%;
+    }
+    .panel h2{font-size:2rem; margin:0 0 8px}
+    .panel p{color:var(--muted); max-width:60ch}
+
+    .card{
+      background:var(--card); border:1px solid var(--card-bd);
+      border-radius:18px; padding:20px; box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
-    /* Card */
-    .card{
-      position:relative;
-      background:var(--card);
-      border:1px solid var(--card-border);
-      border-radius:18px;
-      padding:1.2rem 1.2rem 1rem;
-      min-height:150px;
-      transform-style: preserve-3d;
-      transition: transform .2s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
-      box-shadow: var(--shadow);
-      will-change: transform;
+    .grid{
+      display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr));
+      gap:12px; margin-top:8px;
     }
-    .card:hover{
-      box-shadow: var(--glow);
+
+    .tile{
+      position:relative; padding:16px 16px 14px; border-radius:14px;
+      border:1px solid var(--card-bd); background:rgba(255,255,255,.06);
+      transition: transform .2s ease, box-shadow .25s ease, border-color .2s ease, background .2s ease;
+      will-change: transform; transform-style: preserve-3d;
     }
-    .card h2{
-      font-size:1.15rem;margin:0 0 .6rem;padding-bottom:.45rem;
-      border-bottom:1px dashed var(--card-border);
+    .tile:hover{ box-shadow:var(--glow) }
+    .tile h3{margin:.2rem 0 .35rem; font-size:1.05rem}
+    .tile p{margin:0 0 .6rem; color:var(--muted); font-size:.9rem}
+    .tile a{
+      display:inline-block; font-weight:800; text-decoration:none; color:var(--accent);
+      border-bottom:2px solid transparent; transition: border-color .2s ease;
     }
-    .card p{color:var(--muted);font-size:.92rem;margin:0 0 .8rem}
-    .card a{
-      display:inline-block;
-      color:var(--accent);
-      font-weight:700;
-      text-decoration:none;
-      border-bottom:2px solid transparent;
-      transition: color .2s ease, border-color .2s ease;
-    }
-    .card a:hover{border-color:var(--accent)}
+    .tile a:hover{ border-color:var(--accent) }
     .badge{
-      position:absolute;top:.8rem;right:.8rem;
-      font-size:.72rem;
-      padding:.25rem .5rem;border-radius:999px;
-      border:1px solid var(--card-border);
-      background:rgba(255,255,255,.12);
-      color:var(--muted);
+      position:absolute; top:.6rem; right:.6rem; font-size:.7rem; padding:.2rem .5rem;
+      border-radius:999px; border:1px solid var(--card-bd); color:var(--muted); background:rgba(255,255,255,.10);
       backdrop-filter: blur(6px);
     }
 
-    /* Footer */
-    footer{
-      margin-top:auto;
-      text-align:center;
-      padding:1rem 0;
-      color:var(--muted);
+    .cta{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;
     }
+    .btn{
+      appearance:none; border:none; cursor:pointer;
+      padding:.7rem 1rem; border-radius:12px; font-weight:800; letter-spacing:.2px;
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .btnPrimary{ background:linear-gradient(135deg, var(--accent), #64c1ff); color:#fff; box-shadow:var(--glow) }
+    .btnGhost{ background:var(--card); color:var(--text); border:1px solid var(--card-bd) }
+    .btn:hover{ transform:translateY(-1px) }
 
-    /* Reduced motion: disable tilt transitions */
+    footer{ margin-top:20px; text-align:center; color:var(--muted) }
+
     @media (prefers-reduced-motion: reduce){
-      .card{transition:none}
-      .card:hover{box-shadow:var(--shadow)}
+      .tile, .btn{ transition:none }
+      .tile:hover{ box-shadow:var(--shadow) }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="wrap">
     <header>
       <div class="brand">
         <img alt="Sampurna Logo"
              src="https://raw.githubusercontent.com/mdsahil-sfspl/document_guidelines/main/Sampurna%20logo%20final%20without%20tagline%20png(2).png">
-        <div class="title">
-          <h1>📘 Sampurna IT Documentation Hub</h1>
-          <p>Single source of truth for requirements, design, and architecture.</p>
+        <div>
+          <h1>Sampurna Documentation Portal</h1>
+          <div class="sub">Access specs, designs, and blueprints in one place.</div>
         </div>
       </div>
-
       <div class="toggle">
         <small id="themeLabel">Auto</small>
-        <button id="themeBtn" aria-label="Toggle theme">🌓 Toggle Theme</button>
+        <button id="themeBtn" aria-label="Toggle theme">🌓 Toggle</button>
       </div>
     </header>
 
-    <main id="grid">
-      <!-- Live links -->
-      <section class="card tilt">
-        <span class="badge">Live</span>
-        <h2>Wireframe</h2>
-        <p>Early UX blueprint for screens and flows.</p>
-        <a href="https://mdsahil-sfspl.github.io/document_guidelines/wireframe/" target="_blank" rel="noopener">Open Wireframe →</a>
-      </section>
+    <section class="hero">
+      <!-- Left visual/hero panel -->
+      <div class="panel">
+        <div class="panelContent">
+          <h2>Centralized. Consistent. Compliant.</h2>
+          <p>Your single source of truth for BRD, SRS, HLD/LLD, and database artifacts. Designed for reviewers, devs, and auditors.</p>
+          <div class="cta">
+            <a class="btn btnPrimary" href="https://mdsahil-sfspl.github.io/document_guidelines/BRD/" target="_blank" rel="noopener">Open BRD</a>
+            <a class="btn btnGhost" href="https://mdsahil-sfspl.github.io/document_guidelines/SRS/" target="_blank" rel="noopener">Open SRS</a>
+          </div>
+        </div>
+      </div>
 
-      <section class="card tilt">
-        <span class="badge">Live</span>
-        <h2>Software Requirement Specification (SRS)</h2>
-        <p>Functional & non-functional requirements, constraints, and scope.</p>
-        <a href="https://mdsahil-sfspl.github.io/document_guidelines/SRS/" target="_blank" rel="noopener">Open SRS →</a>
-      </section>
+      <!-- Right action/content card -->
+      <div class="card">
+        <h2 style="margin:0 0 10px">Quick Links</h2>
+        <div class="grid" id="tiles">
+          <!-- Live -->
+          <div class="tile tilt">
+            <span class="badge">Live</span>
+            <h3>Wireframe</h3>
+            <p>UX blueprint for key flows.</p>
+            <a href="https://mdsahil-sfspl.github.io/document_guidelines/wireframe/" target="_blank" rel="noopener">Open →</a>
+          </div>
 
-      <section class="card tilt">
-        <span class="badge">Live</span>
-        <h2>Business Requirement Document (BRD)</h2>
-        <p>Business goals, stakeholders, use cases, and high-level outcomes.</p>
-        <a href="https://mdsahil-sfspl.github.io/document_guidelines/BRD/" target="_blank" rel="noopener">Open BRD →</a>
-      </section>
+          <div class="tile tilt">
+            <span class="badge">Live</span>
+            <h3>SRS</h3>
+            <p>Functional, non-functional, scope.</p>
+            <a href="https://mdsahil-sfspl.github.io/document_guidelines/SRS/" target="_blank" rel="noopener">Open →</a>
+          </div>
 
-      <!-- Placeholders you can wire later -->
-      <section class="card tilt">
-        <span class="badge">Planned</span>
-        <h2>High Level Design (HLD)</h2>
-        <p>System components, integrations, deployment view.</p>
-        <a href="#" target="_blank" rel="noopener">Add HLD link →</a>
-      </section>
+          <div class="tile tilt">
+            <span class="badge">Live</span>
+            <h3>BRD</h3>
+            <p>Business goals & outcomes.</p>
+            <a href="https://mdsahil-sfspl.github.io/document_guidelines/BRD/" target="_blank" rel="noopener">Open →</a>
+          </div>
 
-      <section class="card tilt">
-        <span class="badge">Planned</span>
-        <h2>Low Level Design (LLD)</h2>
-        <p>Detailed modules, interfaces, class diagrams.</p>
-        <a href="#" target="_blank" rel="noopener">Add LLD link →</a>
-      </section>
+          <!-- Planned -->
+          <div class="tile tilt">
+            <span class="badge">Planned</span>
+            <h3>HLD (High Level Design)</h3>
+            <p>Components, integrations, deployment.</p>
+            <a href="#" target="_blank" rel="noopener">Add link →</a>
+          </div>
 
-      <section class="card tilt">
-        <span class="badge">Planned</span>
-        <h2>Database Design</h2>
-        <p>Schemas, indexes, constraints, performance notes.</p>
-        <a href="#" target="_blank" rel="noopener">Add DB Design link →</a>
-      </section>
+          <div class="tile tilt">
+            <span class="badge">Planned</span>
+            <h3>LLD (Low Level Design)</h3>
+            <p>Modules, classes, interfaces.</p>
+            <a href="#" target="_blank" rel="noopener">Add link →</a>
+          </div>
 
-      <section class="card tilt">
-        <span class="badge">Planned</span>
-        <h2>ER Diagram</h2>
-        <p>Entities, relationships, and cardinalities.</p>
-        <a href="#" target="_blank" rel="noopener">Add ER Diagram link →</a>
-      </section>
-    </main>
+          <div class="tile tilt">
+            <span class="badge">Planned</span>
+            <h3>Database Design</h3>
+            <p>Schemas, indexes, constraints.</p>
+            <a href="#" target="_blank" rel="noopener">Add link →</a>
+          </div>
 
-    <footer>
-      © 2025 Sampurna IT Team • Designed with care for internal stakeholders
-    </footer>
+          <div class="tile tilt">
+            <span class="badge">Planned</span>
+            <h3>ER Diagram</h3>
+            <p>Entities & relationships.</p>
+            <a href="#" target="_blank" rel="noopener">Add link →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>© 2025 Sampurna IT Team</footer>
   </div>
 
   <script>
-    // ---------- Theme: auto / light / dark ----------
+    // Theme toggle: auto → light → dark cycle (persists)
     (function(){
       const root = document.documentElement;
       const btn = document.getElementById('themeBtn');
       const label = document.getElementById('themeLabel');
-      const PREF_KEY = 'sampurna-docs-theme'; // values: auto | light | dark
+      const KEY='sampurna-docs-theme';
 
-      const getSystem = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      const apply = (mode) => {
-        const effective = (mode === 'auto') ? getSystem() : mode;
-        root.setAttribute('data-theme', effective === 'light' ? 'light' : 'dark');
-        label.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
-      };
-      const cycle = (curr) => ({ auto:'light', light:'dark', dark:'auto' }[curr] || 'auto');
+      const systemDark = () => matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light';
+      const apply = (mode)=>{
+        const eff = (mode==='auto') ? systemDark() : mode;
+        root.setAttribute('data-theme', eff==='light'?'light':'dark');
+        label.textContent = mode[0].toUpperCase()+mode.slice(1);
+      }
+      const next = (m)=>({auto:'light', light:'dark', dark:'auto'}[m]||'auto');
 
-      let pref = localStorage.getItem(PREF_KEY) || 'auto';
+      let pref = localStorage.getItem(KEY)||'auto';
       apply(pref);
-
-      // react to system change when in auto
-      const mq = window.matchMedia('(prefers-color-scheme: dark)');
-      mq.addEventListener?.('change', () => {
-        if((localStorage.getItem(PREF_KEY) || 'auto') === 'auto') apply('auto');
-      });
-
-      btn.addEventListener('click', () => {
-        pref = cycle(pref);
-        localStorage.setItem(PREF_KEY, pref);
-        apply(pref);
-      });
+      matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', ()=>{ if((localStorage.getItem(KEY)||'auto')==='auto') apply('auto'); });
+      btn.addEventListener('click', ()=>{ pref = next(pref); localStorage.setItem(KEY,pref); apply(pref); });
     })();
 
-    // ---------- 3D Tilt + Glow (reduced-motion safe) ----------
+    // Tilt + glow
     (function(){
-      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReduced) return;
-
-      const cards = document.querySelectorAll('.tilt');
-      const maxTilt = 9; // degrees
-      cards.forEach(card => {
-        let raf = null;
-
-        function onMove(e){
-          const rect = card.getBoundingClientRect();
-          const cx = rect.left + rect.width/2;
-          const cy = rect.top + rect.height/2;
-          const dx = (e.clientX - cx) / (rect.width/2);
-          const dy = (e.clientY - cy) / (rect.height/2);
-          const rx = (-dy * maxTilt).toFixed(2);
-          const ry = (dx * maxTilt).toFixed(2);
-
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(reduce) return;
+      const tiles = document.querySelectorAll('.tilt');
+      const max=8;
+      tiles.forEach(tile=>{
+        let raf=null;
+        function move(e){
+          const r = tile.getBoundingClientRect();
+          const cx = r.left + r.width/2, cy = r.top + r.height/2;
+          const dx = (e.clientX - cx)/(r.width/2), dy = (e.clientY - cy)/(r.height/2);
+          const rx = (-dy*max).toFixed(2), ry=(dx*max).toFixed(2);
           if(raf) cancelAnimationFrame(raf);
-          raf = requestAnimationFrame(() => {
-            card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
-          });
+          raf = requestAnimationFrame(()=> tile.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)` );
         }
-
-        function onLeave(){
-          if(raf) cancelAnimationFrame(raf);
-          card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0)';
-        }
-
-        card.addEventListener('mousemove', onMove);
-        card.addEventListener('mouseleave', onLeave);
-        card.addEventListener('touchmove', e => {
-          // basic support for touch tilt using first touch
-          const t = e.touches[0]; if(!t) return;
-          onMove({ clientX: t.clientX, clientY: t.clientY });
-        }, {passive:true});
-        card.addEventListener('touchend', onLeave);
+        function leave(){ if(raf) cancelAnimationFrame(raf); tile.style.transform='perspective(900px) rotateX(0) rotateY(0)'; }
+        tile.addEventListener('mousemove', move);
+        tile.addEventListener('mouseleave', leave);
+        tile.addEventListener('touchmove', (e)=>{ const t=e.touches[0]; if(!t) return; move({clientX:t.clientX, clientY:t.clientY}); }, {passive:true});
+        tile.addEventListener('touchend', leave);
       });
     })();
   </script>
