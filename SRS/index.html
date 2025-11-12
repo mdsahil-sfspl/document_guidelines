@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Requirements Specification - VoiceAI Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .document-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .info-item {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .toc h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .toc ul {
+            list-style: none;
+        }
+        
+        .toc li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .toc li:last-child {
+            border-bottom: none;
+        }
+        
+        .toc a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            transition: color 0.3s;
+        }
+        
+        .toc a:hover {
+            color: #667eea;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .requirement-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .priority-high {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        
+        .priority-medium {
+            color: #ffc107;
+            font-weight: 600;
+        }
+        
+        .priority-low {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        .approval-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .approval-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .signature-line {
+            border-top: 2px solid #667eea;
+            margin-top: 60px;
+            padding-top: 10px;
+        }
+        
+        @media print {
+            .container {
+                box-shadow: none;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">VA</div>
+            <h1>Software Requirements Specification</h1>
+            <div class="subtitle">VoiceAI Platform - Enterprise AI Voice Synthesis System</div>
+        </div>
+        
+        <!-- Document Information -->
+        <div class="document-info">
+            <div class="info-item">
+                <div class="info-label">Document Version:</div>
+                <div>1.0.0</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Date:</div>
+                <div>November 12, 2025</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Project Name:</div>
+                <div>VoiceAI Platform</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Status:</div>
+                <div>Draft for Review</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Prepared By:</div>
+                <div>Product Engineering Team</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Classification:</div>
+                <div>Confidential - Internal Use Only</div>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h2>Table of Contents</h2>
+                <ul>
+                    <li><a href="#section1"><span>1. Introduction</span><span>1</span></a></li>
+                    <li><a href="#section2"><span>2. Overall Description</span><span>2</span></a></li>
+                    <li><a href="#section3"><span>3. System Features</span><span>3</span></a></li>
+                    <li><a href="#section4"><span>4. External Interface Requirements</span><span>4</span></a></li>
+                    <li><a href="#section5"><span>5. Non-Functional Requirements</span><span>5</span></a></li>
+                    <li><a href="#section6"><span>6. Technical Requirements</span><span>6</span></a></li>
+                    <li><a href="#section7"><span>7. Security Requirements</span><span>7</span></a></li>
+                    <li><a href="#section8"><span>8. Appendices</span><span>8</span></a></li>
+                </ul>
+            </div>
+            
+            <!-- Section 1: Introduction -->
+            <div class="section" id="section1">
+                <h2>1. Introduction</h2>
+                
+                <h3>1.1 Purpose</h3>
+                <p>This Software Requirements Specification (SRS) document provides a comprehensive description of the VoiceAI Platform, an enterprise-grade AI-powered voice synthesis web application. This document is intended for stakeholders including developers, project managers, quality assurance teams, and business analysts involved in the design, development, and deployment of the system.</p>
+                
+                <h3>1.2 Scope</h3>
+                <p>The VoiceAI Platform is a cloud-based Software-as-a-Service (SaaS) application that enables users to generate high-quality, natural-sounding speech from text using advanced artificial intelligence and deep learning technologies. The system will provide:</p>
+                <ul>
+                    <li>Multi-language voice synthesis with 50+ languages and 200+ voice models</li>
+                    <li>Custom voice cloning capabilities using proprietary AI models</li>
+                    <li>Real-time text-to-speech conversion with streaming audio output</li>
+                    <li>Voice library management and organizational workspace features</li>
+                    <li>API access for enterprise integration and automation</li>
+                    <li>Usage analytics, billing management, and team collaboration tools</li>
+                </ul>
+                
+                <h3>1.3 Definitions, Acronyms, and Abbreviations</h3>
+                <table>
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                    </tr>
+                    <tr>
+                        <td>AI</td>
+                        <td>Artificial Intelligence</td>
+                    </tr>
+                    <tr>
+                        <td>API</td>
+                        <td>Application Programming Interface</td>
+                    </tr>
+                    <tr>
+                        <td>TTS</td>
+                        <td>Text-to-Speech</td>
+                    </tr>
+                    <tr>
+                        <td>SaaS</td>
+                        <td>Software as a Service</td>
+                    </tr>
+                    <tr>
+                        <td>REST</td>
+                        <td>Representational State Transfer</td>
+                    </tr>
+                    <tr>
+                        <td>RBAC</td>
+                        <td>Role-Based Access Control</td>
+                    </tr>
+                    <tr>
+                        <td>SSO</td>
+                        <td>Single Sign-On</td>
+                    </tr>
+                    <tr>
+                        <td>WCAG</td>
+                        <td>Web Content Accessibility Guidelines</td>
+                    </tr>
+                </table>
+                
+                <h3>1.4 References</h3>
+                <ul>
+                    <li>IEEE Std 830-1998 - IEEE Recommended Practice for Software Requirements Specifications</li>
+                    <li>GDPR Compliance Guidelines for AI Systems</li>
+                    <li>WCAG 2.1 Level AA Accessibility Standards</li>
+                    <li>ISO/IEC 27001 Information Security Management</li>
+                    <li>SOC 2 Type II Compliance Framework</li>
+                </ul>
+                
+                <h3>1.5 Overview</h3>
+                <p>This document is organized into eight major sections providing detailed specifications for the VoiceAI Platform. Subsequent sections describe the product perspective, system features, interface requirements, non-functional requirements, technical architecture, security considerations, and supplementary information necessary for successful implementation.</p>
+            </div>
+            
+            <!-- Section 2: Overall Description -->
+            <div class="section" id="section2">
+                <h2>2. Overall Description</h2>
+                
+                <h3>2.1 Product Perspective</h3>
+                <p>The VoiceAI Platform is a standalone web-based application that operates within the broader ecosystem of content creation and AI-powered productivity tools. The system interfaces with:</p>
+                <ul>
+                    <li>Cloud infrastructure providers (AWS, Google Cloud, Azure) for scalable computing resources</li>
+                    <li>Payment processing systems (Stripe, PayPal) for subscription management</li>
+                    <li>Third-party authentication providers for enterprise SSO integration</li>
+                    <li>Content delivery networks (CDN) for global audio file distribution</li>
+                    <li>Analytics platforms for usage monitoring and business intelligence</li>
+                </ul>
+                
+                <h3>2.2 Product Functions</h3>
+                <p>The primary functions of the VoiceAI Platform include:</p>
+                
+                <h4>2.2.1 Voice Synthesis</h4>
+                <ul>
+                    <li>Convert text input to natural-sounding speech in multiple languages</li>
+                    <li>Support for various voice styles including conversational, narrative, and professional</li>
+                    <li>Adjustable speech parameters (speed, pitch, emphasis, pauses)</li>
+                    <li>Real-time audio preview with streaming capabilities</li>
+                </ul>
+                
+                <h4>2.2.2 Voice Cloning</h4>
+                <ul>
+                    <li>Upload audio samples for custom voice model training</li>
+                    <li>Generate synthetic voices that replicate specific vocal characteristics</li>
+                    <li>Support for both instant voice cloning (1-2 minute samples) and professional voice cloning (30+ minute samples)</li>
+                </ul>
+                
+                <h4>2.2.3 Project Management</h4>
+                <ul>
+                    <li>Organize audio projects with folders and tagging systems</li>
+                    <li>Version control for audio generations</li>
+                    <li>Batch processing for multiple text conversions</li>
+                    <li>Export options in various audio formats (MP3, WAV, OGG)</li>
+                </ul>
+                
+                <h4>2.2.4 API Integration</h4>
+                <ul>
+                    <li>RESTful API for programmatic access to voice synthesis features</li>
+                    <li>Webhook support for asynchronous processing notifications</li>
+                    <li>SDKs for popular programming languages (Python, JavaScript, Java, C#)</li>
+                </ul>
+                
+                <h3>2.3 User Classes and Characteristics</h3>
+                <table>
+                    <tr>
+                        <th>User Class</th>
+                        <th>Description</th>
+                        <th>Technical Expertise</th>
+                    </tr>
+                    <tr>
+                        <td>Content Creators</td>
+                        <td>Podcasters, video producers, and digital marketers using voice synthesis for content production</td>
+                        <td>Low to Medium</td>
+                    </tr>
+                    <tr>
+                        <td>Enterprise Developers</td>
+                        <td>Software engineers integrating voice synthesis into applications via API</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>Accessibility Specialists</td>
+                        <td>Professionals creating audio content for visually impaired audiences</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>Business Administrators</td>
+                        <td>Organization managers handling billing, user permissions, and usage monitoring</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>Researchers</td>
+                        <td>Academic and industry researchers using voice synthesis for studies</td>
+                        <td>Medium to High</td>
+                    </tr>
+                </table>
+                
+                <h3>2.4 Operating Environment</h3>
+                <p>The VoiceAI Platform will operate in the following environment:</p>
+                <ul>
+                    <li><strong>Client-Side:</strong> Modern web browsers (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)</li>
+                    <li><strong>Server-Side:</strong> Containerized microservices architecture deployed on Kubernetes</li>
+                    <li><strong>Database:</strong> PostgreSQL for relational data, MongoDB for document storage, Redis for caching</li>
+                    <li><strong>AI Infrastructure:</strong> GPU-accelerated compute instances for model inference</li>
+                    <li><strong>Storage:</strong> S3-compatible object storage for audio files and voice models</li>
+                    <li><strong>Network:</strong> HTTPS encrypted connections with global CDN distribution</li>
+                </ul>
+                
+                <h3>2.5 Design and Implementation Constraints</h3>
+                <ul>
+                    <li>Must comply with GDPR, CCPA, and international data privacy regulations</li>
+                    <li>Audio generation latency must not exceed 3 seconds for standard requests</li>
+                    <li>System must support concurrent processing of 10,000+ simultaneous requests</li>
+                    <li>Voice cloning features must include consent verification mechanisms</li>
+                    <li>All user data must be encrypted at rest and in transit</li>
+                    <li>API rate limiting must be implemented to prevent abuse</li>
+                    <li>System must achieve 99.9% uptime SLA</li>
+                </ul>
+                
+                <h3>2.6 Assumptions and Dependencies</h3>
+                <ul>
+                    <li>Users have stable internet connectivity with minimum 2 Mbps bandwidth</li>
+                    <li>Third-party payment processors maintain 99.9% uptime</li>
+                    <li>Cloud infrastructure providers deliver contracted compute and storage resources</li>
+                    <li>Pre-trained AI models are available and licensed for commercial use</li>
+                    <li>Users provide legally compliant audio samples for voice cloning</li>
+                </ul>
+            </div>
+            
+            <!-- Section 3: System Features -->
+            <div class="section" id="section3">
+                <h2>3. System Features</h2>
+                
+                <h3>3.1 User Authentication and Authorization</h3>
+                <div class="requirement-box">
+                    <h4>REQ-3.1.1: Multi-Factor Authentication</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <p><strong>Description:</strong> The system shall provide multi-factor authentication supporting email/password, SSO (Google, Microsoft, Okta), and time-based one-time passwords (TOTP).</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Users can enable/disable 2FA in account settings</li>
+                        <li>SSO integration completes within 3 seconds</li>
+                        <li>Failed authentication attempts are logged and monitored</li>
+                        <li>Account lockout after 5 failed attempts within 15 minutes</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-3.1.2: Role-Based Access Control</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <p><strong>Description:</strong> The system shall implement RBAC with predefined roles: Owner, Admin, Member, and Viewer, each with specific permission sets.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Owners can manage billing and organization settings</li>
+                        <li>Admins can add/remove users and manage projects</li>
+                        <li>Members can create and edit projects</li>
+                        <li>Viewers have read-only access to shared projects</li>
+                    </ul>
+                </div>
+                
+                <h3>3.2 Voice Synthesis Engine</h3>
+                <div class="requirement-box">
+                    <h4>REQ-3.2.1: Text-to-Speech Conversion</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <p><strong>Description:</strong> The system shall convert text input (up to 500,000 characters) into natural-sounding audio using neural TTS models.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Support for 50+ languages with native pronunciation</li>
+                        <li>Processing time < 3 seconds for 1000 character input</li>
+                        <li>Output quality minimum 44.1 kHz sample rate</li>
+                        <li>Automatic language detection with 95%+ accuracy</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-3.2.2: Voice Customization</h4>
+                    <p><strong>Priority:</strong> <span class="priority-medium">Medium</span></p>
+                    <p><strong>Description:</strong> Users shall be able to adjust voice parameters including speaking rate (0.5x to 2.0x), pitch (-20% to +20%), and add emphasis markers.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Real-time preview of parameter adjustments</li>
+                        <li>Presets for common use cases (audiobook, presentation, etc.)</li>
+                        <li>SSML tag support for advanced control</li>
+                        <li>Save custom voice configurations as templates</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-3.2.3: Streaming Audio Generation</h4>
+                    <p><strong>Priority:</strong> <span class="priority-medium">Medium</span></p>
+                    <p><strong>Description:</strong> The system shall support streaming audio output for long-form content, beginning playback before complete generation.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Audio streaming begins within 2 seconds of request</li>
+                        <li>Continuous buffering prevents playback interruption</li>
+                        <li>Support for adaptive bitrate streaming</li>
+                        <li>Graceful handling of network interruptions</li>
+                    </ul>
+                </div>
+                
+                <h3>3.3 Voice Cloning System</h3>
+                <div class="requirement-box">
+                    <h4>REQ-3.3.1: Instant Voice Cloning</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <p><strong>Description:</strong> Users shall be able to create voice clones from 1-2 minutes of audio samples with good quality reproduction.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Support for WAV, MP3, and FLAC audio formats</li>
+                        <li>Voice model generation completes within 5 minutes</li>
+                        <li>Minimum audio quality: 16kHz sample rate, mono channel</li>
+                        <li>Automatic noise reduction and audio enhancement</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-3.3.2: Professional Voice Cloning</h4>
+                    <p><strong>Priority:</strong> <span class="priority-medium">Medium</span></p>
+                    <p><strong>Description:</strong> The system shall provide high-fidelity voice cloning using 30+ minutes of audio with studio-quality output.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Multi-speaker audio separation capabilities</li>
+                        <li>Training progress monitoring and notifications</li>
+                        <li>Voice quality assessment scoring (1-10 scale)</li>
+                        <li>Model training completes within 48 hours</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-3.3.3: Consent Verification</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <p><strong>Description:</strong> The system shall implement mandatory consent verification for voice cloning to prevent misuse.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Require consent statement recording in the voice being cloned</li>
+                        <li>Automated verification using voice matching algorithms</li>
+                        <li>Manual review option for disputed consent</li>
+                        <li>Immutable audit trail of consent records</li>
+                    </ul>
+                </div>
+                
+                <h3>3.4 Project Management</h3>
+                <div class="requirement-box">
+                    <h4>REQ-3.4.1: Project Organization</h4>
+                    <p><strong>Priority:</strong> <span class="priority-medium">Medium</span></p>
+                    <p><strong>Description:</strong> Users shall be able to organize audio generations into projects with hierarchical folder structures.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Create, rename, move, and delete projects and folders</li>
+                        <li>Tag-based categorization system</li>
+                        <li>Search functionality across all projects</li>
+                        <li>Sort by creation date, name, duration, or size</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-3.4.2: Batch Processing</h4>
+                    <p><strong>Priority:</strong> <span class="priority-low">Low</span></p>
+                    <p><strong>Description:</strong> The system shall support batch conversion of multiple text inputs with queue management.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Upload CSV or JSON files with text entries</li>
+                        <li>Progress tracking for batch operations</li>
+                        <li>Parallel processing of up to 10 concurrent conversions</li>
+                        <li>Automatic retry for failed conversions</li>
+                    </ul>
+                </div>
+                
+                <h3>3.5 API and Integration</h3>
+                <div class="requirement-box">
+                    <h4>REQ-3.5.1: RESTful API</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <p><strong>Description:</strong> The system shall provide a comprehensive REST API with endpoints for all major features.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>API key authentication with rate limiting</li>
+                        <li>OpenAPI 3.0 specification documentation</li>
+                        <li>Response time < 200ms for metadata operations</li>
+                        <li>Webhook support for asynchronous notifications</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-3.5.2: SDK Support</h4>
+                    <p><strong>Priority:</strong> <span class="priority-medium">Medium</span></p>
+                    <p><strong>Description:</strong> Official SDKs shall be provided for Python, JavaScript, Java, and C#.</p>
+                    <p><strong>Acceptance Criteria:</strong></p>
+                    <ul>
+                        <li>Comprehensive documentation with code examples</li>
+                        <li>Automatic retry logic and error handling</li>
+                        <li>Type definitions for TypeScript and static languages</li>
+                        <li>Quarterly maintenance updates</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Section 4: External Interface Requirements -->
+            <div class="section" id="section4">
+                <h2>4. External Interface Requirements</h2>
+                
+                <h3>4.1 User Interfaces</h3>
+                <p>The web application shall provide an intuitive, responsive user interface with the following characteristics:</p>
+                <ul>
+                    <li>Responsive design supporting desktop (1920x1080), tablet (768x1024), and mobile (375x667) viewports</li>
+                    <li>Dark and light theme options with user preference persistence</li>
+                    <li>Accessibility compliance with WCAG 2.1 Level AA standards</li>
+                    <li>Keyboard navigation support for all interactive elements</li>
+                    <li>Screen reader compatibility with ARIA labels</li>
+                    <li>Loading states and progress indicators for asynchronous operations</li>
+                    <li>Toast notifications for success, error, and informational messages</li>
+                </ul>
+                
+                <h4>4.1.1 Dashboard Interface</h4>
+                <ul>
+                    <li>Overview of recent projects and usage statistics</li>
+                    <li>Quick access to frequently used voices and templates</li>
+                    <li>Usage metrics visualization with interactive charts</li>
+                    <li>Notification center for system updates and alerts</li>
+                </ul>
+                
+                <h4>4.1.2 Voice Synthesis Interface</h4>
+                <ul>
+                    <li>Text editor with character count and language detection</li>
+                    <li>Voice selection dropdown with preview capabilities</li>
+                    <li>Parameter adjustment controls with real-time preview</li>
+                    <li>Waveform visualization of generated audio</li>
+                    <li>Download and export options with format selection</li>
+                </ul>
+                
+                <h3>4.2 Hardware Interfaces</h3>
+                <p>The system interfaces with the following hardware components:</p>
+                <ul>
+                    <li><strong>Audio Input Devices:</strong> Microphone support for voice cloning sample recording with minimum 16kHz sampling rate</li>
+                    <li><strong>Audio Output Devices:</strong> Standard audio playback through browser-supported audio devices</li>
+                    <li><strong>Storage Devices:</strong> File system access for uploading audio samples and downloading generated files</li>
+                    <li><strong>GPU Accelerators:</strong> NVIDIA A100, V100, or T4 GPUs for AI model inference on server-side</li>
+                </ul>
+                
+                <h3>4.3 Software Interfaces</h3>
+                
+                <h4>4.3.1 Payment Gateway Integration</h4>
+                <table>
+                    <tr>
+                        <th>Service</th>
+                        <th>Purpose</th>
+                        <th>Protocol</th>
+                    </tr>
+                    <tr>
+                        <td>Stripe API v2023-10-16</td>
+                        <td>Credit card processing, subscription management</td>
+                        <td>HTTPS REST</td>
+                    </tr>
+                    <tr>
+                        <td>PayPal Commerce Platform</td>
+                        <td>Alternative payment method</td>
+                        <td>HTTPS REST</td>
+                    </tr>
+                </table>
+                
+                <h4>4.3.2 Authentication Services</h4>
+                <table>
+                    <tr>
+                        <th>Service</th>
+                        <th>Purpose</th>
+                        <th>Protocol</th>
+                    </tr>
+                    <tr>
+                        <td>OAuth 2.0 / OIDC</td>
+                        <td>SSO with Google, Microsoft, GitHub</td>
+                        <td>HTTPS</td>
+                    </tr>
+                    <tr>
+                        <td>SAML 2.0</td>
+                        <td>Enterprise SSO integration</td>
+                        <td>HTTPS</td>
+                    </tr>
+                    <tr>
+                        <td>Auth0</td>
+                        <td>Identity management platform</td>
+                        <td>HTTPS REST</td>
+                    </tr>
+                </table>
+                
+                <h4>4.3.3 Cloud Storage Services</h4>
+                <table>
+                    <tr>
+                        <th>Service</th>
+                        <th>Purpose</th>
+                        <th>Protocol</th>
+                    </tr>
+                    <tr>
+                        <td>Amazon S3</td>
+                        <td>Audio file and model storage</td>
+                        <td>S3 API</td>
+                    </tr>
+                    <tr>
+                        <td>CloudFront CDN</td>
+                        <td>Global content delivery</td>
+                        <td>HTTPS</td>
+                    </tr>
+                </table>
+                
+                <h4>4.3.4 Monitoring and Analytics</h4>
+                <table>
+                    <tr>
+                        <th>Service</th>
+                        <th>Purpose</th>
+                        <th>Protocol</th>
+                    </tr>
+                    <tr>
+                        <td>DataDog</td>
+                        <td>Application performance monitoring</td>
+                        <td>HTTPS REST</td>
+                    </tr>
+                    <tr>
+                        <td>Google Analytics 4</td>
+                        <td>User behavior analytics</td>
+                        <td>HTTPS</td>
+                    </tr>
+                    <tr>
+                        <td>Sentry</td>
+                        <td>Error tracking and reporting</td>
+                        <td>HTTPS</td>
+                    </tr>
+                </table>
+                
+                <h3>4.4 Communication Interfaces</h3>
+                
+                <h4>4.4.1 Network Protocols</h4>
+                <ul>
+                    <li><strong>HTTPS:</strong> All client-server communication encrypted using TLS 1.3</li>
+                    <li><strong>WebSocket:</strong> Real-time streaming audio delivery and progress updates</li>
+                    <li><strong>HTTP/2:</strong> Multiplexed connections for improved performance</li>
+                    <li><strong>gRPC:</strong> Internal microservice communication</li>
+                </ul>
+                
+                <h4>4.4.2 Email Services</h4>
+                <ul>
+                    <li><strong>SendGrid API:</strong> Transactional emails (verification, password reset, notifications)</li>
+                    <li><strong>Template Engine:</strong> HTML email templates with responsive design</li>
+                    <li><strong>Delivery Tracking:</strong> Open rates, click rates, and bounce monitoring</li>
+                </ul>
+                
+                <h4>4.4.3 Webhook Delivery</h4>
+                <ul>
+                    <li>HTTPS POST requests to user-configured endpoints</li>
+                    <li>JSON payload with event data and metadata</li>
+                    <li>HMAC-SHA256 signature verification</li>
+                    <li>Automatic retry with exponential backoff (up to 7 days)</li>
+                </ul>
+            </div>
+            
+            <!-- Section 5: Non-Functional Requirements -->
+            <div class="section" id="section5">
+                <h2>5. Non-Functional Requirements</h2>
+                
+                <h3>5.1 Performance Requirements</h3>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.1.1: Response Time</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Page load time: < 2 seconds for initial load</li>
+                        <li>API response time: < 200ms for metadata operations</li>
+                        <li>Voice synthesis: < 3 seconds for 1000 characters</li>
+                        <li>Database query response: < 100ms for 95th percentile</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.1.2: Throughput</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Support 10,000 concurrent users without degradation</li>
+                        <li>Process 50,000 API requests per minute</li>
+                        <li>Generate 1,000 hours of audio per hour (aggregate)</li>
+                        <li>Handle 100 concurrent voice cloning training jobs</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.1.3: Resource Utilization</h4>
+                    <p><strong>Priority:</strong> <span class="priority-medium">Medium</span></p>
+                    <ul>
+                        <li>CPU utilization: < 70% average, < 90% peak</li>
+                        <li>Memory utilization: < 80% average</li>
+                        <li>GPU utilization: 80-95% optimal range for inference</li>
+                        <li>Network bandwidth: Auto-scaling based on traffic patterns</li>
+                    </ul>
+                </div>
+                
+                <h3>5.2 Safety Requirements</h3>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.2.1: Data Backup</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Automated daily backups of all databases</li>
+                        <li>Point-in-time recovery capability (within 5 minutes)</li>
+                        <li>Geo-redundant backup storage in 3+ regions</li>
+                        <li>Quarterly disaster recovery testing</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.2.2: Error Handling</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Graceful degradation when services are unavailable</li>
+                        <li>User-friendly error messages without exposing technical details</li>
+                        <li>Automatic error reporting to monitoring systems</li>
+                        <li>Circuit breaker patterns for external service failures</li>
+                    </ul>
+                </div>
+                
+                <h3>5.3 Security Requirements</h3>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.3.1: Authentication Security</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Password complexity requirements (minimum 12 characters, mixed case, numbers, symbols)</li>
+                        <li>Session timeout after 30 minutes of inactivity</li>
+                        <li>Secure token storage with HttpOnly, Secure, SameSite cookies</li>
+                        <li>Brute force protection with progressive delays</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.3.2: Data Encryption</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>TLS 1.3 for all data in transit</li>
+                        <li>AES-256 encryption for data at rest</li>
+                        <li>Encrypted database connections</li>
+                        <li>Key rotation every 90 days using AWS KMS</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.3.3: API Security</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>API key rotation capability</li>
+                        <li>Rate limiting: 1000 requests/hour for standard tier</li>
+                        <li>IP whitelisting option for enterprise customers</li>
+                        <li>Request signing for sensitive operations</li>
+                    </ul>
+                </div>
+                
+                <h3>5.4 Software Quality Attributes</h3>
+                
+                <h4>5.4.1 Availability</h4>
+                <ul>
+                    <li>99.9% uptime SLA (< 8.76 hours downtime per year)</li>
+                    <li>Planned maintenance windows during off-peak hours</li>
+                    <li>Zero-downtime deployment capabilities</li>
+                    <li>Multi-region failover within 60 seconds</li>
+                </ul>
+                
+                <h4>5.4.2 Maintainability</h4>
+                <ul>
+                    <li>Modular microservices architecture</li>
+                    <li>Comprehensive API documentation</li>
+                    <li>Automated testing with 80%+ code coverage</li>
+                    <li>Continuous integration/continuous deployment (CI/CD) pipelines</li>
+                </ul>
+                
+                <h4>5.4.3 Portability</h4>
+                <ul>
+                    <li>Containerized services using Docker</li>
+                    <li>Kubernetes orchestration for deployment flexibility</li>
+                    <li>Cloud-agnostic design supporting AWS, GCP, Azure</li>
+                    <li>Infrastructure as Code using Terraform</li>
+                </ul>
+                
+                <h4>5.4.4 Usability</h4>
+                <ul>
+                    <li>Intuitive interface requiring < 5 minutes for basic operations</li>
+                    <li>In-app tutorials and contextual help</li>
+                    <li>Consistent design language across all interfaces</li>
+                    <li>User feedback collection mechanisms</li>
+                </ul>
+                
+                <h4>5.4.5 Scalability</h4>
+                <ul>
+                    <li>Horizontal scaling for API and web servers</li>
+                    <li>Auto-scaling based on CPU, memory, and request metrics</li>
+                    <li>Database sharding for user data distribution</li>
+                    <li>CDN distribution for global audio file delivery</li>
+                </ul>
+                
+                <h3>5.5 Compliance Requirements</h3>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.5.1: GDPR Compliance</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>User consent management for data processing</li>
+                        <li>Right to data portability (export in JSON format)</li>
+                        <li>Right to erasure (complete data deletion within 30 days)</li>
+                        <li>Data processing agreements with subprocessors</li>
+                        <li>Privacy impact assessments for new features</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.5.2: Accessibility Compliance</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>WCAG 2.1 Level AA conformance</li>
+                        <li>Keyboard navigation for all functionality</li>
+                        <li>Screen reader compatibility</li>
+                        <li>Sufficient color contrast ratios (4.5:1 for text)</li>
+                        <li>Alternative text for all images and icons</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-5.5.3: SOC 2 Type II Compliance</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Annual third-party audit</li>
+                        <li>Security, availability, and confidentiality controls</li>
+                        <li>Incident response procedures</li>
+                        <li>Vendor risk management program</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Section 6: Technical Requirements -->
+            <div class="section" id="section6">
+                <h2>6. Technical Requirements</h2>
+                
+                <h3>6.1 System Architecture</h3>
+                
+                <h4>6.1.1 Frontend Architecture</h4>
+                <ul>
+                    <li><strong>Framework:</strong> React 18+ with TypeScript</li>
+                    <li><strong>State Management:</strong> Redux Toolkit with RTK Query</li>
+                    <li><strong>UI Components:</strong> Custom component library built on Tailwind CSS</li>
+                    <li><strong>Build Tool:</strong> Vite for fast development and optimized production builds</li>
+                    <li><strong>Audio Processing:</strong> Web Audio API for waveform visualization</li>
+                </ul>
+                
+                <h4>6.1.2 Backend Architecture</h4>
+                <ul>
+                    <li><strong>API Gateway:</strong> Kong for request routing, rate limiting, and authentication</li>
+                    <li><strong>Application Services:</strong> Node.js (Express) and Python (FastAPI) microservices</li>
+                    <li><strong>AI Inference:</strong> PyTorch models served via TorchServe</li>
+                    <li><strong>Message Queue:</strong> RabbitMQ for asynchronous task processing</li>
+                    <li><strong>Caching Layer:</strong> Redis for session management and API response caching</li>
+                </ul>
+                
+                <h4>6.1.3 Data Architecture</h4>
+                <table>
+                    <tr>
+                        <th>Database Type</th>
+                        <th>Technology</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td>Relational Database</td>
+                        <td>PostgreSQL 15</td>
+                        <td>User accounts, subscriptions, project metadata</td>
+                    </tr>
+                    <tr>
+                        <td>Document Store</td>
+                        <td>MongoDB 6</td>
+                        <td>Voice model configurations, API logs</td>
+                    </tr>
+                    <tr>
+                        <td>Time-Series Database</td>
+                        <td>InfluxDB</td>
+                        <td>Usage metrics, performance monitoring</td>
+                    </tr>
+                    <tr>
+                        <td>Object Storage</td>
+                        <td>Amazon S3</td>
+                        <td>Audio files, voice models, training data</td>
+                    </tr>
+                </table>
+                
+                <h3>6.2 AI/ML Infrastructure</h3>
+                
+                <h4>6.2.1 Voice Synthesis Models</h4>
+                <ul>
+                    <li><strong>Architecture:</strong> Transformer-based neural TTS (Tacotron 2 + WaveGlow variants)</li>
+                    <li><strong>Training Infrastructure:</strong> Distributed training on GPU clusters (8x A100)</li>
+                    <li><strong>Model Versioning:</strong> MLflow for experiment tracking and model registry</li>
+                    <li><strong>Inference Optimization:</strong> ONNX Runtime for 3x faster inference</li>
+                </ul>
+                
+                <h4>6.2.2 Voice Cloning Pipeline</h4>
+                <ul>
+                    <li><strong>Audio Preprocessing:</strong> Noise reduction, normalization, segmentation</li>
+                    <li><strong>Feature Extraction:</strong> Mel-spectrogram and speaker embeddings</li>
+                    <li><strong>Few-Shot Learning:</strong> Meta-learning approach for rapid voice adaptation</li>
+                    <li><strong>Quality Assessment:</strong> MOS (Mean Opinion Score) prediction models</li>
+                </ul>
+                
+                <h3>6.3 DevOps and Infrastructure</h3>
+                
+                <h4>6.3.1 Containerization and Orchestration</h4>
+                <ul>
+                    <li><strong>Container Runtime:</strong> Docker with multi-stage builds</li>
+                    <li><strong>Orchestration:</strong> Kubernetes 1.28+ with Helm charts</li>
+                    <li><strong>Service Mesh:</strong> Istio for traffic management and observability</li>
+                    <li><strong>Ingress Controller:</strong> NGINX for load balancing and SSL termination</li>
+                </ul>
+                
+                <h4>6.3.2 CI/CD Pipeline</h4>
+                <ul>
+                    <li><strong>Version Control:</strong> Git with GitFlow branching strategy</li>
+                    <li><strong>CI Platform:</strong> GitHub Actions for automated testing and building</li>
+                    <li><strong>CD Platform:</strong> ArgoCD for GitOps-based deployments</li>
+                    <li><strong>Testing:</strong> Jest (unit), Cypress (e2e), k6 (load testing)</li>
+                </ul>
+                
+                <h4>6.3.3 Monitoring and Observability</h4>
+                <ul>
+                    <li><strong>Metrics:</strong> Prometheus for metrics collection, Grafana for visualization</li>
+                    <li><strong>Logging:</strong> ELK Stack (Elasticsearch, Logstash, Kibana)</li>
+                    <li><strong>Tracing:</strong> Jaeger for distributed tracing</li>
+                    <li><strong>Alerting:</strong> PagerDuty integration for incident management</li>
+                </ul>
+                
+                <h3>6.4 Integration Requirements</h3>
+                
+                <h4>6.4.1 Third-Party Integrations</h4>
+                <table>
+                    <tr>
+                        <th>Integration</th>
+                        <th>Purpose</th>
+                        <th>Protocol</th>
+                        <th>SLA</th>
+                    </tr>
+                    <tr>
+                        <td>Zapier</td>
+                        <td>No-code workflow automation</td>
+                        <td>REST API</td>
+                        <td>99.9%</td>
+                    </tr>
+                    <tr>
+                        <td>Slack</td>
+                        <td>Team notifications</td>
+                        <td>Webhook / Bot API</td>
+                        <td>99.9%</td>
+                    </tr>
+                    <tr>
+                        <td>Discord</td>
+                        <td>Community integration</td>
+                        <td>Webhook / Bot API</td>
+                        <td>99.9%</td>
+                    </tr>
+                    <tr>
+                        <td>YouTube</td>
+                        <td>Video audio generation</td>
+                        <td>YouTube Data API v3</td>
+                        <td>99.9%</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Section 7: Security Requirements -->
+            <div class="section" id="section7">
+                <h2>7. Security Requirements</h2>
+                
+                <h3>7.1 Authentication and Authorization</h3>
+                
+                <div class="requirement-box">
+                    <h4>REQ-7.1.1: Password Management</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Password hashing using Argon2id with salt</li>
+                        <li>Minimum password strength: 12 characters with complexity requirements</li>
+                        <li>Password history: prevent reuse of last 5 passwords</li>
+                        <li>Mandatory password change every 180 days for enterprise accounts</li>
+                        <li>Secure password reset flow with time-limited tokens (1 hour expiry)</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-7.1.2: Session Management</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>JWT tokens with 1-hour access token expiry</li>
+                        <li>Refresh token rotation with 30-day maximum lifetime</li>
+                        <li>Device fingerprinting for anomaly detection</li>
+                        <li>Concurrent session limit: 5 active sessions per user</li>
+                        <li>Session invalidation on password change</li>
+                    </ul>
+                </div>
+                
+                <h3>7.2 Data Protection</h3>
+                
+                <div class="requirement-box">
+                    <h4>REQ-7.2.1: Encryption Standards</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>TLS 1.3 with perfect forward secrecy for all connections</li>
+                        <li>AES-256-GCM for data at rest encryption</li>
+                        <li>RSA-4096 or ECDSA P-384 for certificate signing</li>
+                        <li>End-to-end encryption option for enterprise customers</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-7.2.2: Data Sanitization</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Input validation for all user-provided data</li>
+                        <li>SQL injection prevention using parameterized queries</li>
+                        <li>XSS protection with content security policy</li>
+                        <li>File upload validation (type, size, content scanning)</li>
+                    </ul>
+                </div>
+                
+                <h3>7.3 Network Security</h3>
+                
+                <div class="requirement-box">
+                    <h4>REQ-7.3.1: Firewall and Network Segmentation</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Web Application Firewall (WAF) with OWASP rule sets</li>
+                        <li>DDoS protection with rate limiting and traffic filtering</li>
+                        <li>Network segmentation with VPC and security groups</li>
+                        <li>Private subnets for databases and internal services</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-7.3.2: Intrusion Detection</h4>
+                    <p><strong>Priority:</strong> <span class="priority-medium">Medium</span></p>
+                    <ul>
+                        <li>Real-time intrusion detection system (IDS)</li>
+                        <li>Anomaly detection for unusual traffic patterns</li>
+                        <li>Automated blocking of malicious IP addresses</li>
+                        <li>Security information and event management (SIEM) integration</li>
+                    </ul>
+                </div>
+                
+                <h3>7.4 Compliance and Auditing</h3>
+                
+                <div class="requirement-box">
+                    <h4>REQ-7.4.1: Audit Logging</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Comprehensive audit logs for all security-relevant events</li>
+                        <li>Immutable log storage with tamper detection</li>
+                        <li>Log retention: 1 year for compliance, 7 years for financial data</li>
+                        <li>Centralized log management with encryption</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h4>REQ-7.4.2: Security Assessments</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Annual penetration testing by third-party security firm</li>
+                        <li>Quarterly vulnerability scanning</li>
+                        <li>Code security reviews before major releases</li>
+                        <li>Bug bounty program for responsible disclosure</li>
+                    </ul>
+                </div>
+                
+                <h3>7.5 Incident Response</h3>
+                
+                <div class="requirement-box">
+                    <h4>REQ-7.5.1: Incident Management</h4>
+                    <p><strong>Priority:</strong> <span class="priority-high">High</span></p>
+                    <ul>
+                        <li>Documented incident response plan with defined roles</li>
+                        <li>24/7 security operations center (SOC) monitoring</li>
+                        <li>Incident classification and escalation procedures</li>
+                        <li>Post-incident analysis and remediation tracking</li>
+                        <li>User notification within 72 hours of data breach</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Section 8: Appendices -->
+            <div class="section" id="section8">
+                <h2>8. Appendices</h2>
+                
+                <h3>8.1 Glossary</h3>
+                <table>
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                    </tr>
+                    <tr>
+                        <td>Acoustic Model</td>
+                        <td>Neural network trained to convert linguistic features into acoustic features</td>
+                    </tr>
+                    <tr>
+                        <td>Inference</td>
+                        <td>Process of running trained AI models to generate predictions or outputs</td>
+                    </tr>
+                    <tr>
+                        <td>Mel-Spectrogram</td>
+                        <td>Visual representation of audio spectrum on the mel scale</td>
+                    </tr>
+                    <tr>
+                        <td>Prosody</td>
+                        <td>Rhythm, stress, and intonation of speech</td>
+                    </tr>
+                    <tr>
+                        <td>Speaker Embedding</td>
+                        <td>Numerical representation of unique voice characteristics</td>
+                    </tr>
+                    <tr>
+                        <td>SSML</td>
+                        <td>Speech Synthesis Markup Language for controlling speech output</td>
+                    </tr>
+                    <tr>
+                        <td>Vocoder</td>
+                        <td>Algorithm that converts acoustic features into audio waveforms</td>
+                    </tr>
+                </table>
+                
+                <h3>8.2 Analysis Models</h3>
+                
+                <h4>8.2.1 Use Case Diagram Description</h4>
+                <p>The system supports the following primary use cases:</p>
+                <ul>
+                    <li><strong>Guest User:</strong> Browse public voice samples, view pricing</li>
+                    <li><strong>Registered User:</strong> Generate speech, manage projects, clone voices</li>
+                    <li><strong>Administrator:</strong> Manage organization, assign roles, view analytics</li>
+                    <li><strong>API Consumer:</strong> Programmatic access to all synthesis features</li>
+                </ul>
+                
+                <h4>8.2.2 Data Flow Diagram</h4>
+                <p><strong>Voice Synthesis Flow:</strong></p>
+                <ol>
+                    <li>User submits text input via web interface or API</li>
+                    <li>Text preprocessing service validates and normalizes input</li>
+                    <li>Language detection service identifies input language</li>
+                    <li>Request queued in RabbitMQ for processing</li>
+                    <li>AI inference service generates audio using neural TTS model</li>
+                    <li>Audio file uploaded to S3 storage</li>
+                    <li>CDN distributes audio globally</li>
+                    <li>User receives download link and audio player</li>
+                </ol>
+                
+                <h3>8.3 Revision History</h3>
+                <table>
+                    <tr>
+                        <th>Version</th>
+                        <th>Date</th>
+                        <th>Author</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>0.1</td>
+                        <td>2025-10-01</td>
+                        <td>Product Team</td>
+                        <td>Initial draft for stakeholder review</td>
+                    </tr>
+                    <tr>
+                        <td>0.5</td>
+                        <td>2025-10-15</td>
+                        <td>Engineering Team</td>
+                        <td>Technical requirements added</td>
+                    </tr>
+                    <tr>
+                        <td>0.8
