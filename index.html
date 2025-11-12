@@ -6,6 +6,7 @@
   <title>Sampurna IT Documentation Hub</title>
   <link rel="icon" href="https://mdsahil-sfspl.github.io/document_guidelines/assets/logo.png">
   <style>
+    /* ====== RESET ====== */
     * {
       margin: 0;
       padding: 0;
@@ -28,15 +29,16 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    /* <<< LOGO FIX >>> */
     header img {
-      width: auto;
-      height: 80px; /* Adjust height as needed */
-      max-width: 100%;
+      max-width: 360px;     /* overall max size; adjust if you want it larger */
+      width: 100%;
+      height: auto;         /* preserves original rectangular aspect */
       margin-bottom: 1rem;
-      border-radius: 12px;
-      background: #fff;
+      background: transparent !important;
+      border-radius: 0 !important;
+      box-shadow: none;
       object-fit: contain;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
 
     header h1 {
@@ -110,9 +112,9 @@
 </head>
 <body>
   <header>
-    <!-- Updated logo display -->
-    <img 
-      src="https://mdsahil-sfspl.github.io/document_guidelines/assets/sampurna_full_logo.png" 
+    <!-- Sampurna logo (keeps full rectangular aspect) -->
+    <img
+      src="https://raw.githubusercontent.com/mdsahil-sfspl/document_guidelines/main/Sampurna%20logo%20final%20without%20tagline%20png(2).png"
       alt="Sampurna Logo"
     />
     <h1>📘 Sampurna IT Documentation Hub</h1>
