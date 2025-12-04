@@ -1,0 +1,3364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Workflow Guide - Sampurna Financial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+            padding: 20px;
+            line-height: 1.8;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.03)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .company-logo {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+        
+        .header .tagline {
+            font-size: 1em;
+            opacity: 0.8;
+            font-style: italic;
+        }
+        
+        .content {
+            padding: 50px;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 6px solid #3b82f6;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        }
+        
+        .welcome-banner h2 {
+            color: #1e3a8a;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-banner p {
+            color: #1e40af;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .badge-admin {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+        
+        .badge-user {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+        }
+        
+        .badge-member {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .section {
+            margin-bottom: 50px;
+            border-left: 5px solid #3b82f6;
+            padding-left: 30px;
+        }
+        
+        .section h2 {
+            color: #1e293b;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .step-container {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 3px solid #e2e8f0;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .step-container:hover::before {
+            left: 100%;
+        }
+        
+        .step-container:hover {
+            transform: translateX(15px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: #3b82f6;
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+            font-size: 1.4em;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            flex-shrink: 0;
+        }
+        
+        .step-title {
+            font-size: 1.5em;
+            color: #1e293b;
+            font-weight: 700;
+        }
+        
+        .substep {
+            margin-left: 70px;
+            margin-top: 15px;
+            padding-left: 25px;
+            border-left: 3px solid #cbd5e1;
+        }
+        
+        .substep-title {
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #6ee7b7;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 5px solid #10b981;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: '$ terminal';
+            position: absolute;
+            top: 5px;
+            right: 15px;
+            font-size: 0.7em;
+            color: #64748b;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .code-block code {
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .code-comment {
+            color: #94a3b8;
+            font-style: italic;
+        }
+        
+        .terminal-block {
+            background: #0f172a;
+            color: #e0e7ff;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border: 2px solid #1e293b;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .terminal-prompt {
+            color: #22c55e;
+            font-weight: bold;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-left: 6px solid #dc2626;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);
+        }
+        
+        .warning-box strong {
+            color: #991b1b;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-left: 6px solid #2563eb;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.1);
+        }
+        
+        .info-box strong {
+            color: #1e40af;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-left: 6px solid #16a34a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.1);
+        }
+        
+        .success-box strong {
+            color: #15803d;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .tip-box {
+            background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+            border-left: 6px solid #ca8a04;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(202, 138, 4, 0.1);
+        }
+        
+        .tip-box strong {
+            color: #92400e;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .folder-structure {
+            background: #0f172a;
+            color: #6ee7b7;
+            padding: 25px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 3px solid #1e293b;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .folder-structure pre {
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        ul {
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: 700;
+            color: #92400e;
+            border: 1px solid #fbbf24;
+        }
+        
+        .command-highlight {
+            background: #1e293b;
+            color: #6ee7b7;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+        
+        .workflow-diagram {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 3px solid #cbd5e1;
+        }
+        
+        .arrow {
+            font-size: 2.5em;
+            color: #3b82f6;
+            margin: 15px 0;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .workflow-box {
+            display: inline-block;
+            background: white;
+            padding: 20px 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            margin: 10px;
+            font-weight: 700;
+            font-size: 1.1em;
+            border: 3px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .workflow-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+        }
+        
+        .keyboard-shortcut {
+            background: #334155;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-block;
+            margin: 0 3px;
+            border: 2px solid #475569;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .screenshot-placeholder {
+            background: #e2e8f0;
+            border: 3px dashed #94a3b8;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            color: #64748b;
+            margin: 20px 0;
+            font-style: italic;
+        }
+        
+        .checklist {
+            background: white;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .checklist-item {
+            padding: 10px;
+            margin: 8px 0;
+            border-left: 4px solid #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .checklist-item:hover {
+            background: #f1f5f9;
+            border-left-color: #3b82f6;
+        }
+        
+        .toc {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 3px solid #7dd3fc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .toc h3 {
+            color: #0c4a6e;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .toc li {
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #0ea5e9;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .toc li:hover {
+            background: #0ea5e9;
+            color: white;
+            transform: translateX(10px);
+        }
+        
+        .footer {
+            background: #0f172a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .footer h3 {
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .footer p {
+            opacity: 0.9;
+            margin: 10px 0;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="company-logo">🏢 Sampurna Financial Pvt Ltd</div>
+                <h1>🚀 Complete GitHub Workflow Guide</h1>
+                <p>No-Code Chatbot Builder Platform</p>
+                <p class="tagline">A Step-by-Step Guide for Fresher Team Members</p>
+            </div>
+        </div>
+        
+        <div class="content">
+            
+            <div class="welcome-banner">
+                <h2>👋 Welcome to the Team!</h2>
+                <p>Hello Team Member! This guide is designed specifically for you as a fresher joining our development team. Don't worry if you're new to Git and GitHub - we'll walk through <strong>every single step</strong> from opening your terminal to pushing your first code. Take your time, follow each instruction carefully, and remember: <strong>everyone starts somewhere!</strong></p>
+                <p style="margin-top: 15px;">This guide covers our complete workflow for the <strong>No-Code Chatbot Builder Platform</strong> project, including database design, SQL queries, and code management. Let's get started! 🎉</p>
+            </div>
+
+            <!-- Table of Contents -->
+            
+            <div class="toc">
+                <h3>📑 Table of Contents</h3>
+                <ul>
+                    <li>Section 1: Initial Setup & Configuration</li>
+                    <li>Section 2: Understanding Our Organization Repository</li>
+                    <li>Section 3: Basic Terminal Commands You'll Need</li>
+                    <li>Section 4: Forking & Cloning Repository</li>
+                    <li>Section 5: Setting Up Python Environment</li>
+                    <li>Section 6: Creating Project Structure</li>
+                    <li>Section 7: Database Design & SQL Files</li>
+                    <li>Section 8: Working with .gitignore</li>
+                    <li>Section 9: Making Commits & Pushing Code</li>
+                    <li>Section 10: Creating Pull Requests</li>
+                    <li>Section 11: Code Review & Merge Process</li>
+                    <li>Quick Reference Commands</li>
+                    <li>Common Issues & Solutions</li>
+                    <li>Best Practices for Team Success</li>
+                    <li>Additional Resources</li>
+                    <li>Final Pre-Push Checklist</li>
+                </ul>
+            </div>
+            
+            <!-- Section 1: Initial Setup -->
+            
+            <div class="section">
+                <h2>🎯 Section 1: Initial Setup & Configuration</h2>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Create Your GitHub Account</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">1.1 Open Your Web Browser</div>
+                        <ul>
+                            <li>Open Google Chrome, Firefox, or any browser</li>
+                            <li>Type in address bar: <span class="highlight">https://github.com</span></li>
+                            <li>Press <span class="keyboard-shortcut">Enter</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">1.2 Sign Up</div>
+                        <ul>
+                            <li>Click on <strong>"Sign up"</strong> button (top-right corner)</li>
+                            <li><strong>Username format:</strong> <span class="highlight">yourFirstName-sfspl</span></li>
+                            <li>Example: If your name is Rahul, username should be: <span class="highlight">rahul-sfspl</span></li>
+                            <li><strong>Email:</strong> Use your Sampurna Financial company email</li>
+                            <li>Example: <span class="highlight">rahul@sampurna.co.in</span></li>
+                            <li>Create a strong password</li>
+                            <li>Complete the verification</li>
+                            <li>Click <strong>"Create account"</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Pro Tip:</strong>
+                        Write down your GitHub username and password in a safe place. You'll need them frequently!
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Open Terminal in Ubuntu</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">2.1 Three Ways to Open Terminal</div>
+                        
+                        <div class="info-box">
+                            <strong>Method 1: Using Keyboard Shortcut (Fastest)</strong>
+                            <ul style="margin-top: 10px;">
+                                <li>Press <span class="keyboard-shortcut">Ctrl</span> + <span class="keyboard-shortcut">Alt</span> + <span class="keyboard-shortcut">T</span> together</li>
+                                <li>Terminal window will open immediately</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-box">
+                            <strong>Method 2: Using Search</strong>
+                            <ul style="margin-top: 10px;">
+                                <li>Click on "Show Applications" (9 dots icon, bottom-left corner)</li>
+                                <li>Type: <span class="command-highlight">terminal</span></li>
+                                <li>Click on "Terminal" icon</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-box">
+                            <strong>Method 3: Right-Click Method</strong>
+                            <ul style="margin-top: 10px;">
+                                <li>Right-click on your Desktop</li>
+                                <li>Select <strong>"Open in Terminal"</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">2.2 Understanding Terminal</div>
+                        <div class="terminal-block">
+                            <span class="terminal-prompt">username@computer-name:~$</span> <span class="code-comment"># This is your command prompt</span>
+                        </div>
+                        <ul>
+                            <li><strong>username:</strong> Your Ubuntu login name</li>
+                            <li><strong>~</strong> (tilde): Means you're in your home directory</li>
+                            <li><strong>$</strong> (dollar): Ready to accept commands</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Configure Git with Your Details</div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ Important:</strong>
+                        Type these commands <strong>exactly</strong> as shown. Replace the example name and email with YOUR actual details.
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">3.1 Set Your Name</div>
+                        <div class="code-block">
+                            <code>git config --global user.name "YourFirstName-sfspl"</code>
+                        </div>
+                        <p><strong>Example:</strong> If your name is Priya:</p>
+                        <div class="code-block">
+                            <code>git config --global user.name "priya-sfspl"</code>
+                        </div>
+                        <ul>
+                            <li>Type the command in terminal</li>
+                            <li>Press <span class="keyboard-shortcut">Enter</span></li>
+                            <li>No output means success! ✅</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">3.2 Set Your Email</div>
+                        <div class="code-block">
+                            <code>git config --global user.email "your-email@sampurna.co.in"</code>
+                        </div>
+                        <p><strong>Example:</strong></p>
+                        <div class="code-block">
+                            <code>git config --global user.email "priya@sampurna.co.in"</code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">3.3 Verify Your Configuration</div>
+                        <div class="code-block">
+                            <code>git config --list</code>
+                        </div>
+                        <p>You should see your name and email in the output. ✅</p>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Generate SSH Key (Secure Connection)</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 What is SSH Key?</strong>
+                        SSH key is like a digital password that lets your computer securely connect to GitHub without typing your password every time.
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">4.1 Create SSH Key</div>
+                        <div class="code-block">
+                            <code>ssh-keygen -t ed25519 -C "your-email@sampurna.co.in"</code>
+                        </div>
+                        <p><strong>Example:</strong></p>
+                        <div class="code-block">
+                            <code>ssh-keygen -t ed25519 -C "priya@sampurna.co.in"</code>
+                        </div>
+                        
+                        <div class="warning-box">
+                            <strong>⚠️ What Will Happen Next:</strong>
+                            <ul style="margin-top: 10px;">
+                                <li>Terminal will ask: <code>"Enter file in which to save the key"</code></li>
+                                <li><strong>Just press <span class="keyboard-shortcut">Enter</span></strong> (accept default location)</li>
+                                <li>Terminal will ask: <code>"Enter passphrase"</code></li>
+                                <li><strong>Just press <span class="keyboard-shortcut">Enter</span></strong> (leave empty for no passphrase)</li>
+                                <li>Terminal will ask again: <code>"Enter same passphrase again"</code></li>
+                                <li><strong>Just press <span class="keyboard-shortcut">Enter</span></strong> again</li>
+                                <li>You'll see a "key fingerprint" message - That's success! ✅</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">4.2 View Your SSH Key</div>
+                        <div class="code-block">
+                            <code>cat ~/.ssh/id_ed25519.pub</code>
+                        </div>
+                        <p>This will display a long string starting with <code>ssh-ed25519</code>. This is your SSH public key.</p>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">4.3 Copy the SSH Key</div>
+                        <ul>
+                            <li>The key will appear in terminal (long text starting with <code>ssh-ed25519</code>)</li>
+                            <li>Use your mouse to select ALL the text (from ssh-ed25519 to your email)</li>
+                            <li>Right-click and select <strong>"Copy"</strong></li>
+                            <li>OR press <span class="keyboard-shortcut">Ctrl</span> + <span class="keyboard-shortcut">Shift</span> + <span class="keyboard-shortcut">C</span></li>
+                        </ul>
+                        
+                        <div class="tip-box">
+                            <strong>💡 Pro Tip:</strong>
+                            Keep this terminal window open! You'll need this key in the next step.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <div class="step-title">Add SSH Key to GitHub Account</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">5.1 Open GitHub Settings</div>
+                        <ul>
+                            <li>Go to <span class="highlight">https://github.com</span> in your browser</li>
+                            <li>Login if not already logged in</li>
+                            <li>Click on your profile picture (top-right corner)</li>
+                            <li>Click <strong>"Settings"</strong> from dropdown menu</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">5.2 Navigate to SSH Keys</div>
+                        <ul>
+                            <li>On the left sidebar, scroll down</li>
+                            <li>Find and click <strong>"Access"</strong> section</li>
+                            <li>Click on <strong>"SSH and GPG keys"</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">5.3 Add New SSH Key</div>
+                        <ul>
+                            <li>Click green button <strong>"New SSH key"</strong></li>
+                            <li><strong>Title:</strong> Give it a name (e.g., "My Ubuntu Laptop" or "Office Computer")</li>
+                            <li><strong>Key:</strong> Paste the SSH key you copied earlier</li>
+                            <li>Press <span class="keyboard-shortcut">Ctrl</span> + <span class="keyboard-shortcut">V</span> to paste</li>
+                            <li>Click green button <strong>"Add SSH key"</strong></li>
+                            <li>GitHub may ask for your password - enter it</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="success-box">
+                        <strong>🎉 Success!</strong>
+                        Your computer is now securely connected to GitHub. You won't need to enter password every time you push code!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 2: Understanding Organization Repository -->
+            
+            <div class="section">
+                <span class="role-badge badge-admin">🏢 ORGANIZATION SETUP</span>
+                <h2>Section 2: Understanding Our Organization Repository</h2>
+                
+                <div class="info-box">
+                    <strong>📌 Important Information:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>Our main repository is an <strong>Organization Repository</strong> owned by <strong>Sampurna Financial Pvt Ltd</strong></li>
+                        <li>You are a <strong>member</strong> of this organization</li>
+                        <li>Repository name: <span class="highlight">chatbot-builder-platform</span></li>
+                        <li>Organization name: <span class="highlight">sampurna-financial</span></li>
+                        <li>You will <strong>fork</strong> this repository (create your personal copy)</li>
+                        <li>Work on your fork, then submit <strong>Pull Request</strong> to merge back</li>
+                    </ul>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">What Admin Has Already Created</div>
+                    </div>
+                    
+                    <div class="checklist">
+                        <div class="checklist-item">✅ Created organization repository: <strong>sampurna-financial/chatbot-builder-platform</strong></div>
+                        <div class="checklist-item">✅ Made it <strong>Private</strong> (only team members can access)</div>
+                        <div class="checklist-item">✅ Added <strong>README.md</strong> file</div>
+                        <div class="checklist-item">✅ Added you as a <strong>member</strong> with access</div>
+                        <div class="checklist-item">❌ <strong>No .gitignore</strong> initially (you will create it)</div>
+                        <div class="checklist-item">❌ <strong>No code</strong> yet (you will add it)</div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">How Workflow Works in Our Team</div>
+                    </div>
+                    
+                    <div class="workflow-diagram">
+                        <div class="workflow-box" style="background: #fee2e2;">🏢 Admin Creates Blank Org Repo</div>
+                        <div class="arrow">⬇️</div>
+                        <div class="workflow-box" style="background: #dbeafe;">👥 Team Member Added as Member</div>
+                        <div class="arrow">⬇️</div>
+                        <div class="workflow-box" style="background: #dcfce7;">🍴 Member Forks Repository</div>
+                        <div class="arrow">⬇️</div>
+                        <div class="workflow-box" style="background: #fef9c3;">💻 Clone to Local Computer</div>
+                        <div class="arrow">⬇️</div>
+                        <div class="workflow-box" style="background: #e0e7ff;">🔨 Develop Code & Features</div>
+                        <div class="arrow">⬇️</div>
+                        <div class="workflow-box" style="background: #fce7f3;">📤 Push to Personal Fork</div>
+                        <div class="arrow">⬇️</div>
+                        <div class="workflow-box" style="background: #ddd6fe;">📝 Create Pull Request</div>
+                        <div class="arrow">⬇️</div>
+                        <div class="workflow-box" style="background: #fed7aa;">👔 Approver Reviews Code</div>
+                        <div class="arrow">⬇️</div>
+                        <div class="workflow-box" style="background: #d1fae5;">✅ Squash & Merge to Main</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 3: Basic Terminal Commands -->
+            
+            <div class="section">
+                <span class="role-badge badge-member">💻 ESSENTIAL SKILLS</span>
+                <h2>Section 3: Basic Terminal Commands You'll Need</h2>
+                
+                <div class="info-box">
+                    <strong>📌 Don't Worry!</strong>
+                    These are simple commands. Practice them a few times and they'll become second nature!
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Navigation Commands</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">pwd - Print Working Directory (Where am I?)</div>
+                        <div class="code-block">
+                            <code>pwd</code>
+                        </div>
+                        <p>Shows your current location in the file system.</p>
+                        <div class="terminal-block">
+                            <span class="terminal-prompt">user@computer:~$</span> pwd<br>
+                            /home/user
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">ls - List (What's here?)</div>
+                        <div class="code-block">
+                            <code>ls                  <span class="code-comment"># List files and folders</span><br>
+ls -la              <span class="code-comment"># List with details (including hidden files)</span></code>
+                        </div>
+                        <p>Shows all files and folders in current location.</p>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">cd - Change Directory (Go somewhere)</div>
+                        <div class="code-block">
+                            <code>cd Documents         <span class="code-comment"># Go to Documents folder</span><br>
+cd ..               <span class="code-comment"># Go back one folder</span><br>
+cd ~                <span class="code-comment"># Go to home directory</span><br>
+cd /path/to/folder  <span class="code-comment"># Go to specific folder</span></code>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Pro Tip:</strong>
+                        After typing a folder name, press <span class="keyboard-shortcut">Tab</span> key. Terminal will auto-complete the name for you!
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">File & Folder Commands</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">mkdir - Make Directory (Create folder)</div>
+                        <div class="code-block">
+                            <code>mkdir my-project           <span class="code-comment"># Create a single folder</span><br>
+mkdir -p backend/api/routes  <span class="code-comment"># Create nested folders</span></code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">touch - Create Empty File</div>
+                        <div class="code-block">
+                            <code>touch main.py        <span class="code-comment"># Create main.py file</span><br>
+touch README.md      <span class="code-comment"># Create README file</span></code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">cp - Copy Files</div>
+                        <div class="code-block">
+                            <code>cp file.txt newfile.txt     <span class="code-comment"># Copy file</span><br>
+cp -r folder newfolder      <span class="code-comment"># Copy entire folder</span></code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">mv - Move or Rename</div>
+                        <div class="code-block">
+                            <code>mv old.py new.py            <span class="code-comment"># Rename file</span><br>
+mv file.txt Documents/      <span class="code-comment"># Move file to Documents</span></code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">rm - Remove (Delete) - BE CAREFUL!</div>
+                        <div class="code-block">
+                            <code>rm file.txt          <span class="code-comment"># Delete file</span><br>
+rm -r folder         <span class="code-comment"># Delete folder and contents</span></code>
+                        </div>
+                        <div class="warning-box">
+                            <strong>⚠️ WARNING:</strong> Deleted files cannot be recovered! Double-check before using <code>rm</code> command.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Viewing File Contents</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">cat - Show File Content</div>
+                        <div class="code-block">
+                            <code>cat file.txt         <span class="code-comment"># Display file content</span></code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">nano - Simple Text Editor</div>
+                        <div class="code-block">
+                            <code>nano file.txt        <span class="code-comment"># Open file in nano editor</span></code>
+                        </div>
+                        <ul>
+                            <li>Edit the file</li>
+                            <li>Press <span class="keyboard-shortcut">Ctrl</span> + <span class="keyboard-shortcut">O</span> to save</li>
+                            <li>Press <span class="keyboard-shortcut">Enter</span> to confirm</li>
+                            <li>Press <span class="keyboard-shortcut">Ctrl</span> + <span class="keyboard-shortcut">X</span> to exit</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Practice Exercise (Try It Now!)</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Let's practice!</span><br>
+<br>
+<span class="code-comment"># 1. Check where you are</span><br>
+pwd<br>
+<br>
+<span class="code-comment"># 2. Go to home directory</span><br>
+cd ~<br>
+<br>
+<span class="code-comment"># 3. Create a practice folder</span><br>
+mkdir practice-git<br>
+<br>
+<span class="code-comment"># 4. Go into that folder</span><br>
+cd practice-git<br>
+<br>
+<span class="code-comment"># 5. Check current location (should show practice-git)</span><br>
+pwd<br>
+<br>
+<span class="code-comment"># 6. Create a test file</span><br>
+touch hello.txt<br>
+<br>
+<span class="code-comment"># 7. List files (you should see hello.txt)</span><br>
+ls<br>
+<br>
+<span class="code-comment"># 8. Go back to home</span><br>
+cd ~<br>
+<br>
+<span class="code-comment"># Congratulations! You've mastered basic commands! 🎉</span></code>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 4: Forking & Cloning -->
+            
+            <div class="section">
+                <span class="role-badge badge-user">👨‍💻 MEMBER WORKFLOW</span>
+                <h2>Section 4: Forking & Cloning Repository</h2>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Fork the Organization Repository</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 What is Forking?</strong>
+                        Forking creates YOUR personal copy of the organization's repository. You can make changes freely without affecting the main project.
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">1.1 Navigate to Organization Repository</div>
+                        <ul>
+                            <li>Open your browser</li>
+                            <li>Login to GitHub</li>
+                            <li>Go to: <span class="highlight">https://github.com/sampurna-financial/chatbot-builder-platform</span></li>
+                            <li>You should see the repository (since you're a member)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">1.2 Click Fork Button</div>
+                        <ul>
+                            <li>Look at top-right corner of the page</li>
+                            <li>Find and click <strong>"Fork"</strong> button (next to Star)</li>
+                            <li>A popup will appear</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">1.3 Configure Your Fork</div>
+                        <ul>
+                            <li><strong>Repository name:</strong> Change to <span class="highlight">chatbot-builder-platform_yourName</span></li>
+                            <li>Example: If your name is Rahul, name it: <span class="highlight">chatbot-builder-platform_rahul</span></li>
+                            <li><strong>Description:</strong> (Optional) "My fork for chatbot development"</li>
+                            <li>Keep <strong>"Copy the main branch only"</strong> checked</li>
+                            <li>Click green button <strong>"Create fork"</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="success-box">
+                        <strong>🎉 Congratulations!</strong>
+                        You now have your personal copy of the repository at:<br>
+                        <code>https://github.com/yourUsername/chatbot-builder-platform_yourName</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Clone Repository to Your Computer (First Time)</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 What is Cloning?</strong>
+                        Cloning downloads the repository from GitHub to your local computer so you can work on it.
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">2.1 Get Repository URL</div>
+                        <ul>
+                            <li>On YOUR forked repository page (not organization page)</li>
+                            <li>Click green button <strong>"Code"</strong></li>
+                            <li>Make sure <strong>"SSH"</strong> tab is selected (not HTTPS)</li>
+                            <li>You'll see something like: <code>git@github.com:yourUsername/chatbot-builder-platform_yourName.git</code></li>
+                            <li>Click the copy icon (📋) to copy the URL</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">2.2 Open Terminal and Navigate</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># Open terminal (Ctrl + Alt + T)</span><br>
+<br>
+<span class="code-comment"># Go to home directory</span><br>
+cd ~<br>
+<br>
+<span class="code-comment"># Create a folder for all your projects (if not exists)</span><br>
+mkdir Projects<br>
+<br>
+<span class="code-comment"># Go into Projects folder</span><br>
+cd Projects<br>
+<br>
+<span class="code-comment"># Check current location</span><br>
+pwd<br>
+<span class="code-comment"># Should show: /home/yourUsername/Projects</span></code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">2.3 Clone the Repository</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># Clone command (paste your copied URL)</span><br>
+git clone git@github.com:yourUsername/chatbot-builder-platform_yourName.git</code>
+                        </div>
+                        
+                        <p><strong>Example (if your username is rahul-sfspl):</strong></p>
+                        <div class="code-block">
+                            <code>git clone git@github.com:rahul-sfspl/chatbot-builder-platform_rahul.git</code>
+                        </div>
+                        
+                        <ul>
+                            <li>Press <span class="keyboard-shortcut">Enter</span></li>
+                            <li>First time: May ask "Are you sure you want to continue?" - Type <strong>yes</strong> and press Enter</li>
+                            <li>You'll see downloading progress</li>
+                            <li>When done, you'll see "done"</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">2.4 Enter the Project Folder</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># List folders to see your project</span><br>
+ls<br>
+<span class="code-comment"># You should see: chatbot-builder-platform_yourName</span><br>
+<br>
+<span class="code-comment"># Go into project folder</span><br>
+cd chatbot-builder-platform_yourName<br>
+<br>
+<span class="code-comment"># Check what's inside (should see README.md)</span><br>
+ls</code>
+                        </div>
+                    </div>
+                    
+                    <div class="success-box">
+                        <strong>✅ Perfect!</strong>
+                        Repository is now on your computer at:<br>
+                        <code>/home/yourUsername/Projects/chatbot-builder-platform_yourName/</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Pull Latest Updates (For Future)</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 When to Use This:</strong>
+                        Use <code>git pull</code> when you've already cloned the repository and want to get the latest changes.
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Make sure you're inside project folder</span><br>
+cd ~/Projects/chatbot-builder-platform_yourName<br>
+<br>
+<span class="code-comment"># Pull latest changes from YOUR fork</span><br>
+git pull origin main<br>
+<br>
+<span class="code-comment"># If successful, you'll see "Already up to date" or list of changes</span></code>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 5: Python Environment Setup -->
+            
+            <div class="section">
+                <span class="role-badge badge-user">🐍 PYTHON SETUP</span>
+                <h2>Section 5: Setting Up Python Environment</h2>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Create Virtual Environment (venv)</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 What is Virtual Environment?</strong>
+                        A venv is like a separate container for your project's Python packages. It keeps this project's packages separate from other projects, preventing conflicts.
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ IMPORTANT:</strong>
+                        Make sure you're INSIDE your project folder before creating venv!
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Navigate to project folder</span><br>
+cd ~/Projects/chatbot-builder-platform_yourName<br>
+<br>
+<span class="code-comment"># Check you're in the right place (should see README.md)</span><br>
+ls<br>
+<br>
+<span class="code-comment"># Create virtual environment named 'venv'</span><br>
+python3 -m venv venv<br>
+<br>
+<span class="code-comment"># This will take 10-20 seconds... wait for command prompt to return</span></code>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Verify venv was Created</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># List files - you should now see 'venv' folder</span><br>
+ls<br>
+<span class="code-comment"># Output should include: README.md  venv/</span></code>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Activate Virtual Environment</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 Why Activate?</strong>
+                        Activating tells terminal to use the Python and packages from THIS project's venv, not the system's Python.
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Activate venv</span><br>
+source venv/bin/activate<br>
+<br>
+<span class="code-comment"># Press Enter</span></code>
+                    </div>
+                    
+                    <div class="success-box">
+                        <strong>✅ How to Know It's Activated:</strong>
+                        Your terminal prompt will change. You'll see <code>(venv)</code> at the beginning:<br>
+                        <code>(venv) user@computer:~/Projects/chatbot-builder-platform_yourName$</code>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Remember:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Activate venv:</strong> <code>source venv/bin/activate</code></li>
+                            <li><strong>Deactivate venv:</strong> <code>deactivate</code></li>
+                            <li>You need to activate venv EVERY TIME you open a new terminal!</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Install Python Packages</div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ Make Sure:</strong>
+                        You see <code>(venv)</code> in your terminal prompt before installing packages!
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Upgrade pip (package installer) first</span><br>
+pip install --upgrade pip<br>
+<br>
+<span class="code-comment"># Install required packages for chatbot platform</span><br>
+pip install flask<br>
+pip install fastapi<br>
+pip install uvicorn<br>
+pip install sqlalchemy<br>
+pip install pydantic<br>
+pip install python-dotenv<br>
+pip install psycopg2-binary<br>
+pip install pymysql<br>
+<br>
+<span class="code-comment"># Or install all at once:</span><br>
+pip install flask fastapi uvicorn sqlalchemy pydantic python-dotenv psycopg2-binary pymysql</code>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Verify Installation</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># List all installed packages</span><br>
+pip list<br>
+<br>
+<span class="code-comment"># You should see all the packages you just installed</span></code>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Create requirements.txt</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 What is requirements.txt?</strong>
+                        This file lists ALL Python packages your project needs. Other team members can install everything with one command!
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Make sure venv is activated (you should see (venv))</span><br>
+<br>
+<span class="code-comment"># Generate requirements.txt file</span><br>
+pip freeze > requirements.txt<br>
+<br>
+<span class="code-comment"># View the file contents</span><br>
+cat requirements.txt</code>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Important:</strong>
+                        Whenever you install a NEW package, remember to update requirements.txt:
+                        <div class="code-block" style="margin-top: 10px;">
+                            <code>pip install new-package<br>
+pip freeze > requirements.txt</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- Section 6: Project Structure -->
+            
+            <div class="section">
+                <span class="role-badge badge-user">📁 PROJECT STRUCTURE</span>
+                <h2>Section 6: Creating Project Structure</h2>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Create Folder Structure</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 Professional Structure:</strong>
+                        A well-organized project structure makes code easier to understand and maintain.
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Make sure you're in project root</span><br>
+cd ~/Projects/chatbot-builder-platform_yourName<br>
+<br>
+<span class="code-comment"># Create all folders at once</span><br>
+mkdir -p config backend/api/routes backend/api/middleware backend/core backend/models backend/services backend/utils scripts tests docs database frontend/public frontend/src/components frontend/src/pages<br>
+<br>
+<span class="code-comment"># Create __init__.py files for Python packages</span><br>
+touch config/__init__.py<br>
+touch backend/__init__.py<br>
+touch backend/api/__init__.py<br>
+touch backend/api/routes/__init__.py<br>
+touch backend/api/middleware/__init__.py<br>
+touch backend/core/__init__.py<br>
+touch backend/models/__init__.py<br>
+touch backend/services/__init__.py<br>
+touch backend/utils/__init__.py</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Create Main Files</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Create main Python files</span><br>
+touch backend/main.py<br>
+touch config/settings.py<br>
+touch config/database.py<br>
+<br>
+<span class="code-comment"># Create route files</span><br>
+touch backend/api/routes/chatbot.py<br>
+touch backend/api/routes/flows.py<br>
+touch backend/api/routes/users.py<br>
+<br>
+<span class="code-comment"># Create core engine files</span><br>
+touch backend/core/chatbot_engine.py<br>
+touch backend/core/flow_builder.py<br>
+<br>
+<span class="code-comment"># Create model files</span><br>
+touch backend/models/chatbot.py<br>
+touch backend/models/conversation.py<br>
+touch backend/models/user.py<br>
+<br>
+<span class="code-comment"># Create service files</span><br>
+touch backend/services/nlp_service.py<br>
+touch backend/services/integration_service.py<br>
+<br>
+<span class="code-comment"># Create utility files</span><br>
+touch backend/utils/helpers.py<br>
+<br>
+<span class="code-comment"># Create test files</span><br>
+touch tests/test_api.py<br>
+touch tests/test_chatbot_engine.py<br>
+<br>
+<span class="code-comment"># Create documentation files</span><br>
+touch docs/architecture.md<br>
+touch docs/api_reference.md<br>
+<br>
+<span class="code-comment"># Create environment file</span><br>
+touch .env.example</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">View Your Complete Structure</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Install tree command if not available</span><br>
+sudo apt install tree<br>
+<br>
+<span class="code-comment"># View project structure (excluding venv)</span><br>
+tree -I 'venv|__pycache__|*.pyc'</code>
+                    </div>
+                    
+                    <div class="folder-structure">
+<pre>chatbot-builder-platform_yourName/
+├── README.md
+├── requirements.txt
+├── .env.example
+├── config/
+│   ├── __init__.py
+│   ├── settings.py
+│   └── database.py
+├── backend/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── routes/
+│   │   │   ├── __init__.py
+│   │   │   ├── chatbot.py
+│   │   │   ├── flows.py
+│   │   │   └── users.py
+│   │   └── middleware/
+│   │       └── __init__.py
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── chatbot_engine.py
+│   │   └── flow_builder.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── chatbot.py
+│   │   ├── conversation.py
+│   │   └── user.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── nlp_service.py
+│   │   └── integration_service.py
+│   └── utils/
+│       ├── __init__.py
+│       └── helpers.py
+├── frontend/                    # Optional: For UI
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   └── pages/
+│   └── package.json            # If using Node.js/React
+├── database/
+│   ├── schema.sql              # Database schema
+│   ├── migrations/
+│   └── sample_data.sql
+├── scripts/
+│   ├── setup.sh
+│   └── deploy.sh
+├── tests/
+│   ├── test_api.py
+│   └── test_chatbot_engine.py
+├── docs/
+│   ├── architecture.md
+│   └── api_reference.md
+└── venv/                        # ⚠️ NEVER commit this!</pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 7: Database & SQL -->
+            
+            <div class="section">
+                <span class="role-badge badge-user">🗄️ DATABASE SETUP</span>
+                <h2>Section 7: Database Design & SQL Files</h2>
+                
+                <div class="info-box">
+                    <strong>📌 Important for Our Platform:</strong>
+                    Our chatbot builder needs a database to store chatbots, conversations, users, and flow configurations. We'll create SQL files and add them to Git.
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Create Database Folder & Files</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Create database folder if not exists</span><br>
+mkdir -p database/migrations<br>
+<br>
+<span class="code-comment"># Create SQL files</span><br>
+touch database/schema.sql<br>
+touch database/sample_data.sql<br>
+touch database/migrations/001_initial_schema.sql</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Create Database Schema (schema.sql)</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Open the file in nano editor</div>
+                        <div class="code-block">
+                            <code>nano database/schema.sql</code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Add Database Schema</div>
+                        <p>Type or paste the following SQL:</p>
+                        <div class="code-block">
+                            <code><span class="code-comment">-- Chatbot Builder Platform Database Schema</span><br>
+<span class="code-comment">-- Created by: Sampurna Financial Team</span><br>
+<span class="code-comment">-- Date: 2025-01-15</span><br>
+<br>
+<span class="code-comment">-- Users Table</span><br>
+CREATE TABLE IF NOT EXISTS users (<br>
+    user_id INT PRIMARY KEY AUTO_INCREMENT,<br>
+    username VARCHAR(100) UNIQUE NOT NULL,<br>
+    email VARCHAR(255) UNIQUE NOT NULL,<br>
+    password_hash VARCHAR(255) NOT NULL,<br>
+    full_name VARCHAR(200),<br>
+    role ENUM('admin', 'developer', 'viewer') DEFAULT 'developer',<br>
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,<br>
+    is_active BOOLEAN DEFAULT TRUE<br>
+);<br>
+<br>
+<span class="code-comment">-- Chatbots Table</span><br>
+CREATE TABLE IF NOT EXISTS chatbots (<br>
+    chatbot_id INT PRIMARY KEY AUTO_INCREMENT,<br>
+    chatbot_name VARCHAR(200) NOT NULL,<br>
+    description TEXT,<br>
+    created_by INT NOT NULL,<br>
+    status ENUM('draft', 'active', 'inactive') DEFAULT 'draft',<br>
+    welcome_message TEXT,<br>
+    fallback_message TEXT,<br>
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,<br>
+    FOREIGN KEY (created_by) REFERENCES users(user_id) ON DELETE CASCADE<br>
+);<br>
+<br>
+<span class="code-comment">-- Flows Table (Conversation flows)</span><br>
+CREATE TABLE IF NOT EXISTS flows (<br>
+    flow_id INT PRIMARY KEY AUTO_INCREMENT,<br>
+    chatbot_id INT NOT NULL,<br>
+    flow_name VARCHAR(200) NOT NULL,<br>
+    flow_type ENUM('linear', 'branching', 'ai_powered') DEFAULT 'linear',<br>
+    flow_json JSON,<br>
+    is_default BOOLEAN DEFAULT FALSE,<br>
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,<br>
+    FOREIGN KEY (chatbot_id) REFERENCES chatbots(chatbot_id) ON DELETE CASCADE<br>
+);<br>
+<br>
+<span class="code-comment">-- Nodes Table (Flow nodes/steps)</span><br>
+CREATE TABLE IF NOT EXISTS nodes (<br>
+    node_id INT PRIMARY KEY AUTO_INCREMENT,<br>
+    flow_id INT NOT NULL,<br>
+    node_type ENUM('message', 'question', 'condition', 'action', 'api_call') NOT NULL,<br>
+    node_content TEXT,<br>
+    node_config JSON,<br>
+    position_x INT DEFAULT 0,<br>
+    position_y INT DEFAULT 0,<br>
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
+    FOREIGN KEY (flow_id) REFERENCES flows(flow_id) ON DELETE CASCADE<br>
+);<br>
+<br>
+<span class="code-comment">-- Conversations Table</span><br>
+CREATE TABLE IF NOT EXISTS conversations (<br>
+    conversation_id INT PRIMARY KEY AUTO_INCREMENT,<br>
+    chatbot_id INT NOT NULL,<br>
+    user_identifier VARCHAR(255),<br>
+    session_id VARCHAR(255) UNIQUE NOT NULL,<br>
+    started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
+    ended_at TIMESTAMP NULL,<br>
+    status ENUM('active', 'completed', 'abandoned') DEFAULT 'active',<br>
+    FOREIGN KEY (chatbot_id) REFERENCES chatbots(chatbot_id) ON DELETE CASCADE<br>
+);<br>
+<br>
+<span class="code-comment">-- Messages Table</span><br>
+CREATE TABLE IF NOT EXISTS messages (<br>
+    message_id INT PRIMARY KEY AUTO_INCREMENT,<br>
+    conversation_id INT NOT NULL,<br>
+    sender ENUM('user', 'bot') NOT NULL,<br>
+    message_text TEXT NOT NULL,<br>
+    message_type ENUM('text', 'image', 'button', 'quick_reply') DEFAULT 'text',<br>
+    metadata JSON,<br>
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
+    FOREIGN KEY (conversation_id) REFERENCES conversations(conversation_id) ON DELETE CASCADE<br>
+);<br>
+<br>
+<span class="code-comment">-- Integrations Table</span><br>
+CREATE TABLE IF NOT EXISTS integrations (<br>
+    integration_id INT PRIMARY KEY AUTO_INCREMENT,<br>
+    chatbot_id INT NOT NULL,<br>
+    integration_type VARCHAR(50) NOT NULL,<br>
+    config JSON,<br>
+    is_enabled BOOLEAN DEFAULT TRUE,<br>
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
+    FOREIGN KEY (chatbot_id) REFERENCES chatbots(chatbot_id) ON DELETE CASCADE<br>
+);<br>
+<br>
+<span class="code-comment">-- Analytics Table</span><br>
+CREATE TABLE IF NOT EXISTS analytics (<br>
+    analytics_id INT PRIMARY KEY AUTO_INCREMENT,<br>
+    chatbot_id INT NOT NULL,<br>
+    event_type VARCHAR(100),<br>
+    event_data JSON,<br>
+    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
+    FOREIGN KEY (chatbot_id) REFERENCES chatbots(chatbot_id) ON DELETE CASCADE<br>
+);<br>
+<br>
+<span class="code-comment">-- Create indexes for better performance</span><br>
+CREATE INDEX idx_chatbot_status ON chatbots(status);<br>
+CREATE INDEX idx_conversation_session ON conversations(session_id);<br>
+CREATE INDEX idx_message_conversation ON messages(conversation_id);<br>
+CREATE INDEX idx_analytics_chatbot ON analytics(chatbot_id);</code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Save the file</div>
+                        <ul>
+                            <li>Press <span class="keyboard-shortcut">Ctrl</span> + <span class="keyboard-shortcut">O</span> (Save)</li>
+                            <li>Press <span class="keyboard-shortcut">Enter</span> (Confirm filename)</li>
+                            <li>Press <span class="keyboard-shortcut">Ctrl</span> + <span class="keyboard-shortcut">X</span> (Exit nano)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Create Sample Data (sample_data.sql)</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Open file</span><br>
+nano database/sample_data.sql</code>
+                    </div>
+                    
+                    <p>Add sample data for testing:</p>
+                    <div class="code-block">
+                        <code><span class="code-comment">-- Sample Data for Chatbot Builder Platform</span><br>
+<span class="code-comment">-- Insert test users</span><br>
+INSERT INTO users (username, email, password_hash, full_name, role) VALUES<br>
+('admin-sfspl', 'admin@sampurna.co.in', 'hashed_password_here', 'Admin User', 'admin'),<br>
+('rahul-sfspl', 'rahul@sampurna.co.in', 'hashed_password_here', 'Rahul Kumar', 'developer'),<br>
+('priya-sfspl', 'priya@sampurna.co.in', 'hashed_password_here', 'Priya Sharma', 'developer');<br>
+<br>
+<span class="code-comment">-- Insert sample chatbot</span><br>
+INSERT INTO chatbots (chatbot_name, description, created_by, status, welcome_message, fallback_message) VALUES<br>
+('Customer Support Bot', 'Handles customer queries and support tickets', 1, 'active', <br>
+'Welcome! How can I help you today?', <br>
+'I did not understand. Can you please rephrase?');<br>
+<br>
+<span class="code-comment">-- Insert sample flow</span><br>
+INSERT INTO flows (chatbot_id, flow_name, flow_type, is_default) VALUES<br>
+(1, 'Main Support Flow', 'branching', TRUE);</code>
+                    </div>
+                    
+                    <p>Save and exit (Ctrl+O, Enter, Ctrl+X)</p>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Create Database Documentation</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Create README in database folder</span><br>
+nano database/README.md</code>
+                    </div>
+                    
+                    <p>Add documentation:</p>
+                    <div class="code-block">
+                        <code># Database Documentation<br>
+<br>
+## Overview<br>
+This folder contains all database-related files for the Chatbot Builder Platform.<br>
+<br>
+## Files<br>
+<br>
+### schema.sql<br>
+Complete database schema with all tables, relationships, and indexes.<br>
+<br>
+**Tables:**<br>
+- `users` - System users and authentication<br>
+- `chatbots` - Chatbot configurations<br>
+- `flows` - Conversation flow definitions<br>
+- `nodes` - Individual flow nodes/steps<br>
+- `conversations` - User chat sessions<br>
+- `messages` - Individual messages<br>
+- `integrations` - Third-party integrations<br>
+- `analytics` - Usage analytics and metrics<br>
+<br>
+### sample_data.sql<br>
+Sample data for testing and development.<br>
+<br>
+## How to Use<br>
+<br>
+### Setup Database (First Time)<br>
+```bash<br>
+# For MySQL/MariaDB<br>
+mysql -u root -p < database/schema.sql<br>
+<br>
+# For PostgreSQL<br>
+psql -U postgres -d chatbot_db < database/schema.sql<br>
+```<br>
+<br>
+### Load Sample Data<br>
+```bash<br>
+mysql -u root -p chatbot_db < database/sample_data.sql<br>
+```<br>
+<br>
+## Database Design Decisions<br>
+<br>
+1. **Users Table**: Stores authentication and role management<br>
+2. **Chatbots Table**: Main chatbot configurations<br>
+3. **Flows Table**: JSON-based flow storage for flexibility<br>
+4. **Conversations**: Tracks all user interactions<br>
+5. **Analytics**: Event-based tracking for insights<br>
+<br>
+## Entity Relationship<br>
+<br>
+```<br>
+Users (1) ---< (N) Chatbots<br>
+Chatbots (1) ---< (N) Flows<br>
+Flows (1) ---< (N) Nodes<br>
+Chatbots (1) ---< (N) Conversations<br>
+Conversations (1) ---< (N) Messages<br>
+```</code>
+                    </div>
+                    
+                    <p>Save and exit</p>
+                </div>
+                
+                <div class="success-box">
+                    <strong>✅ Excellent!</strong>
+                    Your database design is now documented and ready to be added to Git. This will help all team members understand the database structure!
+                </div>
+            </div>
+            
+            <!-- Section 8: .gitignore -->
+            
+            <div class="section">
+                <span class="role-badge badge-user">🚫 GITIGNORE SETUP</span>
+                <h2>Section 8: Working with .gitignore</h2>
+                
+                <div class="warning-box">
+                    <strong>⚠️ CRITICAL STEP:</strong>
+                    Create .gitignore BEFORE your first commit to avoid uploading venv folder (which has 1000+ files)!
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">What is .gitignore?</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 Understanding .gitignore:</strong>
+                        .gitignore tells Git which files and folders to IGNORE. These files won't be tracked or uploaded to GitHub.
+                        <br><br>
+                        <strong>Files we should NEVER upload:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>venv/ - Virtual environment (too many files, machine-specific)</li>
+                            <li>__pycache__/ - Python cache files</li>
+                            <li>.env - Secret keys and passwords</li>
+                            <li>*.pyc - Compiled Python files</li>
+                            <li>node_modules/ - If using JavaScript/React</li>
+                            <li>Database files (*.db, *.sqlite3)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Create .gitignore File (Method 1: Quick Download)</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Make sure you're in project root</span><br>
+cd ~/Projects/chatbot-builder-platform_yourName<br>
+<br>
+<span class="code-comment"># Download official Python .gitignore template from GitHub</span><br>
+curl -o .gitignore https://raw.githubusercontent.com/github/gitignore/main/Python.gitignore<br>
+<br>
+<span class="code-comment"># View the file</span><br>
+cat .gitignore</code>
+                    </div>
+                    
+                    <div class="success-box">
+                        <strong>✅ Easiest Method!</strong>
+                        This downloads a comprehensive .gitignore file maintained by GitHub experts.
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Create .gitignore File (Method 2: Manual)</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Create .gitignore file</span><br>
+nano .gitignore</code>
+                    </div>
+                    
+                    <p>Add these essential ignores:</p>
+                    <div class="code-block">
+                        <code><span class="code-comment"># Python Virtual Environment</span><br>
+venv/<br>
+env/<br>
+ENV/<br>
+<br>
+<span class="code-comment"># Python Cache</span><br>
+__pycache__/<br>
+*.py[cod]<br>
+*$py.class<br>
+*.so<br>
+.Python<br>
+<br>
+<span class="code-comment"># Build and Distribution</span><br>
+build/<br>
+develop-eggs/<br>
+dist/<br>
+downloads/<br>
+eggs/<br>
+.eggs/<br>
+lib/<br>
+lib64/<br>
+parts/<br>
+sdist/<br>
+var/<br>
+wheels/<br>
+*.egg-info/<br>
+.installed.cfg<br>
+*.egg<br>
+<br>
+<span class="code-comment"># Environment Variables (IMPORTANT!)</span><br>
+.env<br>
+.env.local<br>
+.env.*.local<br>
+config/.env<br>
+<br>
+<span class="code-comment"># Database Files</span><br>
+*.db<br>
+*.sqlite3<br>
+*.sqlite<br>
+<br>
+<span class="code-comment"># IDE and Editor Files</span><br>
+.vscode/<br>
+.idea/<br>
+*.swp<br>
+*.swo<br>
+*~<br>
+.DS_Store<br>
+<br>
+<span class="code-comment"># Logs</span><br>
+*.log<br>
+logs/<br>
+<br>
+<span class="code-comment"># Testing</span><br>
+.coverage<br>
+htmlcov/<br>
+.pytest_cache/<br>
+<br>
+<span class="code-comment"># Frontend (if using Node.js/React)</span><br>
+node_modules/<br>
+frontend/node_modules/<br>
+frontend/build/<br>
+frontend/dist/<br>
+npm-debug.log*<br>
+yarn-debug.log*<br>
+yarn-error.log*<br>
+<br>
+<span class="code-comment"># OS Files</span><br>
+Thumbs.db<br>
+.DS_Store</code>
+                    </div>
+                    
+                    <p>Save and exit (Ctrl+O, Enter, Ctrl+X)</p>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Add Custom Project-Specific Ignores</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Open .gitignore to add more</span><br>
+nano .gitignore<br>
+<br>
+<span class="code-comment"># Add at the end of file:</span></code>
+                    </div>
+                    
+                    <p>Add these project-specific ignores:</p>
+                    <div class="code-block">
+                        <code><br>
+<span class="code-comment"># Chatbot Platform Specific</span><br>
+uploads/<br>
+temp/<br>
+cache/<br>
+*.bak<br>
+*.backup<br>
+<br>
+<span class="code-comment"># Sensitive Config Files (Never commit these!)</span><br>
+config/production.py<br>
+config/secrets.py<br>
+<br>
+<span class="code-comment"># Large Data Files</span><br>
+*.csv<br>
+*.xlsx<br>
+*.zip<br>
+*.tar.gz</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <div class="step-title">Verify .gitignore is Working</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Check Git status</span><br>
+git status<br>
+<br>
+<span class="code-comment"># venv/ should NOT appear in "Untracked files"</span><br>
+<span class="code-comment"># If you see venv/, .gitignore is working! ✅</span></code>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Test Your .gitignore:</strong>
+                        <div class="code-block" style="margin-top: 10px;">
+                            <code><span class="code-comment"># This command shows what Git will track</span><br>
+git ls-files<br>
+<br>
+<span class="code-comment"># After first commit, check if venv is tracked</span><br>
+git ls-files | grep venv<br>
+<br>
+<span class="code-comment"># Should return NOTHING (empty output) ✅</span></code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <span class="role-badge badge-user">💾 COMMIT & PUSH</span>
+                <h2>Section 9: Making Commits & Pushing Code</h2>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Understanding Git Workflow</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 Three-Step Process:</strong>
+                        <ol style="margin-top: 10px; margin-left: 20px;">
+                            <li><strong>git add</strong> - Stage files (prepare them for commit)</li>
+                            <li><strong>git commit</strong> - Save changes with a message</li>
+                            <li><strong>git push</strong> - Upload changes to GitHub</li>
+                        </ol>
+                        <br>
+                        <strong>Think of it like sending a package:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li><code>git add</code> = Put items in the box</li>
+                            <li><code>git commit</code> = Seal and label the box</li>
+                            <li><code>git push</code> = Mail the package</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Check Current Status</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Make sure you're in project root</span><br>
+cd ~/Projects/chatbot-builder-platform_yourName<br>
+<br>
+<span class="code-comment"># Check what files have changed</span><br>
+git status</code>
+                    </div>
+                    
+                    <div class="terminal-block">
+                        <span class="code-comment"># You should see output like:</span><br>
+On branch main<br>
+Untracked files:<br>
+  (use "git add <file>..." to include in what will be committed)<br>
+<br>
+        .gitignore<br>
+        backend/<br>
+        config/<br>
+        database/<br>
+        docs/<br>
+        frontend/<br>
+        requirements.txt<br>
+        scripts/<br>
+        tests/<br>
+<br>
+<span class="code-comment"># Notice: venv/ is NOT listed (because of .gitignore) ✅</span>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Stage Files (git add)</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Option 1: Add All Files (Recommended for first commit)</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># Add ALL files (respects .gitignore)</span><br>
+git add .<br>
+<br>
+<span class="code-comment"># Check what was staged</span><br>
+git status</code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Option 2: Add Specific Files</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># Add specific file</span><br>
+git add backend/main.py<br>
+<br>
+<span class="code-comment"># Add entire folder</span><br>
+git add database/<br>
+<br>
+<span class="code-comment"># Add multiple files</span><br>
+git add .gitignore requirements.txt README.md</code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Option 3: Add by File Type</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># Add all Python files</span><br>
+git add *.py<br>
+<br>
+<span class="code-comment"># Add all SQL files</span><br>
+git add database/*.sql</code>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Pro Tip:</strong>
+                        After <code>git add</code>, always run <code>git status</code> to see what will be committed (files shown in green).
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Commit Changes (git commit)</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 Writing Good Commit Messages:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Start with a verb: "Add", "Fix", "Update", "Remove"</li>
+                            <li>Be specific but concise</li>
+                            <li>Use present tense: "Add feature" not "Added feature"</li>
+                            <li>First line: Brief summary (50 chars max)</li>
+                            <li>Blank line, then detailed description if needed</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Simple Commit (One-line message)</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># Short commit message</span><br>
+git commit -m "Add initial chatbot platform structure"</code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Detailed Commit (Multi-line message)</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># Commit with detailed description</span><br>
+git commit -m "Add complete chatbot builder platform structure<br>
+<br>
+- Created backend API with FastAPI framework<br>
+- Added database schema with 8 tables<br>
+- Implemented chatbot engine core logic<br>
+- Setup flow builder service<br>
+- Created comprehensive folder structure<br>
+- Added SQL migration files<br>
+- Configured .gitignore for Python project<br>
+- Generated requirements.txt with all dependencies<br>
+<br>
+Database tables include: users, chatbots, flows, nodes,<br>
+conversations, messages, integrations, and analytics."</code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Commit Message Examples for Common Tasks</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># For new features</span><br>
+git commit -m "feat: Add user authentication system"<br>
+<br>
+<span class="code-comment"># For bug fixes</span><br>
+git commit -m "fix: Resolve chatbot flow navigation issue"<br>
+<br>
+<span class="code-comment"># For documentation</span><br>
+git commit -m "docs: Update API reference documentation"<br>
+<br>
+<span class="code-comment"># For database changes</span><br>
+git commit -m "database: Add analytics table and indexes"<br>
+<br>
+<span class="code-comment"># For configuration</span><br>
+git commit -m "chore: Update dependencies in requirements.txt"<br>
+<br>
+<span class="code-comment"># For refactoring</span><br>
+git commit -m "refactor: Improve chatbot engine performance"</code>
+                        </div>
+                    </div>
+                    
+                    <div class="success-box">
+                        <strong>✅ After Committing:</strong>
+                        You'll see output like:<br>
+                        <code>[main abc1234] Add initial chatbot platform structure<br>
+ 42 files changed, 1250 insertions(+)<br>
+ create mode 100644 .gitignore<br>
+ create mode 100644 backend/main.py<br>
+ ...</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <div class="step-title">Verify Before Pushing</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Check commit history</span><br>
+git log --oneline<br>
+<br>
+<span class="code-comment"># See what files will be pushed</span><br>
+git ls-files<br>
+<br>
+<span class="code-comment"># CRITICAL: Make sure venv is NOT in the list!</span><br>
+git ls-files | grep venv<br>
+<span class="code-comment"># Should return NOTHING ✅</span><br>
+<br>
+<span class="code-comment"># Check if any large files accidentally added</span><br>
+git ls-files | wc -l<br>
+<span class="code-comment"># Should be around 50-100 files, NOT 1000+</span></code>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ STOP IF YOU SEE:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>venv/ files in the list</li>
+                            <li>1000+ files being committed</li>
+                            <li>__pycache__/ folders</li>
+                            <li>.env files with secrets</li>
+                        </ul>
+                        <br>
+                        <strong>If this happens:</strong> DO NOT PUSH! See troubleshooting section below.
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">6</div>
+                        <div class="step-title">Push to GitHub (git push)</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Push to your forked repository</span><br>
+git push origin main<br>
+<br>
+<span class="code-comment"># You'll see upload progress...</span></code>
+                    </div>
+                    
+                    <div class="terminal-block">
+                        <span class="code-comment"># Output will look like:</span><br>
+Enumerating objects: 58, done.<br>
+Counting objects: 100% (58/58), done.<br>
+Delta compression using up to 4 threads<br>
+Compressing objects: 100% (45/45), done.<br>
+Writing objects: 100% (57/57), 15.23 KiB | 1.52 MiB/s, done.<br>
+Total 57 (delta 8), reused 0 (delta 0)<br>
+To github.com:yourUsername/chatbot-builder-platform_yourName.git<br>
+   abc1234..def5678  main -> main
+                    </div>
+                    
+                    <div class="success-box">
+                        <strong>🎉 Success!</strong>
+                        Your code is now on GitHub! Go to your repository URL to see it:<br>
+                        <code>https://github.com/yourUsername/chatbot-builder-platform_yourName</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">7</div>
+                        <div class="step-title">Verify Upload on GitHub</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Steps to Verify:</div>
+                        <ul>
+                            <li>Open browser and go to your forked repository</li>
+                            <li>Refresh the page</li>
+                            <li>You should see:
+                                <ul style="margin-left: 20px; margin-top: 5px;">
+                                    <li>All your folders (backend/, config/, database/, etc.)</li>
+                                    <li>.gitignore file</li>
+                                    <li>requirements.txt</li>
+                                    <li>README.md</li>
+                                    <li>Your commit message</li>
+                                    <li><strong>NO venv/ folder</strong> ✅</li>
+                                </ul>
+                            </li>
+                            <li>Click on "database/" folder and verify SQL files are there</li>
+                            <li>Click on ".gitignore" to verify it exists</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">8</div>
+                        <div class="step-title">🚨 Troubleshooting: If You Accidentally Committed venv</div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ If venv was committed (BEFORE pushing):</strong>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Undo last commit (keeps your files)</span><br>
+git reset HEAD~1<br>
+<br>
+<span class="code-comment"># Remove venv from staging</span><br>
+git rm -r --cached venv/<br>
+<br>
+<span class="code-comment"># Make sure .gitignore exists and has venv/</span><br>
+cat .gitignore | grep venv<br>
+<br>
+<span class="code-comment"># Add files again (venv will be ignored now)</span><br>
+git add .<br>
+<br>
+<span class="code-comment"># Commit again</span><br>
+git commit -m "Add initial project structure"<br>
+<br>
+<span class="code-comment"># Verify venv is not included</span><br>
+git ls-files | grep venv<br>
+<span class="code-comment"># Should be empty ✅</span><br>
+<br>
+<span class="code-comment"># Now safe to push</span><br>
+git push origin main</code>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ If venv was ALREADY pushed to GitHub:</strong>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Remove venv from Git but keep locally</span><br>
+git rm -r --cached venv/<br>
+<br>
+<span class="code-comment"># Commit the removal</span><br>
+git commit -m "Remove venv from repository"<br>
+<br>
+<span class="code-comment"># Push to remove from GitHub</span><br>
+git push origin main<br>
+<br>
+<span class="code-comment"># Verify on GitHub - venv folder should be gone</span></code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">9</div>
+                        <div class="step-title">Daily Workflow for Future Updates</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Your typical daily workflow:</span><br>
+<br>
+<span class="code-comment"># 1. Open terminal</span><br>
+cd ~/Projects/chatbot-builder-platform_yourName<br>
+<br>
+<span class="code-comment"># 2. Activate venv</span><br>
+source venv/bin/activate<br>
+<br>
+<span class="code-comment"># 3. Pull latest changes (if working with team)</span><br>
+git pull origin main<br>
+<br>
+<span class="code-comment"># 4. Work on your code...</span><br>
+<span class="code-comment"># (edit files, create features, fix bugs)</span><br>
+<br>
+<span class="code-comment"># 5. If you installed new packages:</span><br>
+pip install new-package<br>
+pip freeze > requirements.txt<br>
+<br>
+<span class="code-comment"># 6. Check what changed</span><br>
+git status<br>
+<br>
+<span class="code-comment"># 7. Stage changes</span><br>
+git add .<br>
+<br>
+<span class="code-comment"># 8. Commit with meaningful message</span><br>
+git commit -m "feat: Add chatbot response template system"<br>
+<br>
+<span class="code-comment"># 9. Push to GitHub</span><br>
+git push origin main<br>
+<br>
+<span class="code-comment"># 10. Create Pull Request (see next section)</span></code>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 10: Pull Requests -->
+            
+            <div class="section">
+                <span class="role-badge badge-user">📝 PULL REQUEST</span>
+                <h2>Section 10: Creating Pull Requests</h2>
+                
+                <div class="info-box">
+                    <strong>📌 What is a Pull Request (PR)?</strong>
+                    A Pull Request is how you ask the organization to merge YOUR changes into THEIR main repository. It's like saying: "Hey, I've made some improvements. Please review and accept them!"
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Navigate to Your Forked Repository</div>
+                    </div>
+                    
+                    <ul>
+                        <li>Open browser</li>
+                        <li>Go to: <code>https://github.com/yourUsername/chatbot-builder-platform_yourName</code></li>
+                        <li>Make sure you pushed your latest changes (you should see your recent commits)</li>
+                    </ul>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Click "Contribute" Button</div>
+                    </div>
+                    
+                    <ul>
+                        <li>Near the top of your repository page, you'll see a notification:
+                            <div class="info-box" style="margin-top: 10px;">
+                                <code>This branch is 15 commits ahead of sampurna-financial:main</code>
+                            </div>
+                        </li>
+                        <li>Click the green <strong>"Contribute"</strong> button (next to the notification)</li>
+                        <li>A dropdown will appear</li>
+                    </ul>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Open Pull Request</div>
+                    </div>
+                    
+                    <ul>
+                        <li>In the dropdown, click <strong>"Open pull request"</strong></li>
+                        <li>You'll be taken to a new page with a form</li>
+                    </ul>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Verify Branches</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>Check the merge direction:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Base repository:</strong> sampurna-financial/chatbot-builder-platform</li>
+                            <li><strong>Base branch:</strong> main</li>
+                            <li>← (arrow pointing left)</li>
+                            <li><strong>Head repository:</strong> yourUsername/chatbot-builder-platform_yourName</li>
+                            <li><strong>Head branch:</strong> main</li>
+                        </ul>
+                        <br>
+                        This means: Merge FROM your fork INTO organization repo ✅
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <div class="step-title">Write PR Title</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Good PR Title Examples:</div>
+                        <div class="code-block">
+                            <code><span class="code-comment"># For initial submission</span><br>
+Add chatbot builder platform - [Your Name]<br>
+<br>
+<span class="code-comment"># For features</span><br>
+feat: Implement flow builder with drag-and-drop - Rahul<br>
+<br>
+<span class="code-comment"># For database changes</span><br>
+database: Add complete schema and migrations - Priya<br>
+<br>
+<span class="code-comment"># For bug fixes</span><br>
+fix: Resolve conversation state management issue - Amit</code>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">6</div>
+                        <div class="step-title">Write Detailed PR Description</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 Good PR Description Includes:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>What you changed</li>
+                            <li>Why you changed it</li>
+                            <li>How to test it</li>
+                            <li>Any new dependencies</li>
+                            <li>Database changes (if any)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Example PR Description Template:</div>
+                        <div class="code-block">
+                            <code>## Summary<br>
+Added complete no-code chatbot builder platform with backend API, database schema, and flow management system.<br>
+<br>
+## Changes Made<br>
+<br>
+### Backend<br>
+- ✅ Implemented FastAPI-based REST API<br>
+- ✅ Created chatbot engine with flow execution logic<br>
+- ✅ Added user authentication and authorization<br>
+- ✅ Implemented NLP service integration<br>
+- ✅ Created API routes for chatbot CRUD operations<br>
+<br>
+### Database<br>
+- ✅ Designed complete database schema with 8 tables<br>
+- ✅ Created `schema.sql` with all table definitions<br>
+- ✅ Added indexes for performance optimization<br>
+- ✅ Included `sample_data.sql` for testing<br>
+- ✅ Documented database design in `database/README.md`<br>
+<br>
+### Project Structure<br>
+- ✅ Organized code into backend/, config/, database/ folders<br>
+- ✅ Created comprehensive folder structure<br>
+- ✅ Added .gitignore to exclude venv and cache files<br>
+- ✅ Generated requirements.txt with all dependencies<br>
+<br>
+### Documentation<br>
+- ✅ Created API reference documentation<br>
+- ✅ Added architecture documentation<br>
+- ✅ Documented database schema and relationships<br>
+<br>
+## Database Tables Added<br>
+1. **users** - User authentication and roles<br>
+2. **chatbots** - Chatbot configurations<br>
+3. **flows** - Conversation flow definitions<br>
+4. **nodes** - Individual flow steps/nodes<br>
+5. **conversations** - User chat sessions<br>
+6. **messages** - Chat messages<br>
+7. **integrations** - Third-party integrations<br>
+8. **analytics** - Usage metrics and events<br>
+<br>
+## Dependencies Added<br>
+```<br>
+flask==3.0.0<br>
+fastapi==0.109.0<br>
+uvicorn==0.27.0<br>
+sqlalchemy==2.0.25<br>
+pydantic==2.5.3<br>
+python-dotenv==1.0.0<br>
+psycopg2-binary==2.9.9<br>
+pymysql==1.1.0<br>
+```<br>
+See `requirements.txt` for complete list.<br>
+<br>
+## How to Test<br>
+<br>
+### Setup Database<br>
+```bash<br>
+# Create database<br>
+mysql -u root -p -e "CREATE DATABASE chatbot_db;"<br>
+<br>
+# Run schema<br>
+mysql -u root -p chatbot_db < database/schema.sql<br>
+<br>
+# Load sample data (optional)<br>
+mysql -u root -p chatbot_db < database/sample_data.sql<br>
+```<br>
+<br>
+### Run Application<br>
+```bash<br>
+# Create and activate venv<br>
+python3 -m venv venv<br>
+source venv/bin/activate<br>
+<br>
+# Install dependencies<br>
+pip install -r requirements.txt<br>
+<br>
+# Run FastAPI server<br>
+uvicorn backend.main:app --reload<br>
+<br>
+# Access API docs<br>
+# Open browser: http://localhost:8000/docs<br>
+```<br>
+<br>
+### Test API Endpoints<br>
+- GET /api/chatbots - List all chatbots<br>
+- POST /api/chatbots - Create new chatbot<br>
+- GET /api/flows/{chatbot_id} - Get chatbot flows<br>
+- POST /api/conversations - Start conversation<br>
+<br>
+## Testing Completed<br>
+- ✅ Unit tests for chatbot engine<br>
+- ✅ API integration tests<br>
+- ✅ Database schema validation<br>
+- ✅ Manual testing of all endpoints<br>
+- ✅ Verified .gitignore excludes venv<br>
+<br>
+## Screenshots<br>
+(Add screenshots if applicable)<br>
+<br>
+## Notes for Reviewer<br>
+- All sensitive config values are in .env.example (not committed)<br>
+- Database migrations are in database/migrations/ folder<br>
+- Frontend folder structure is prepared but implementation pending<br>
+- No venv/ folder committed (verified with git ls-files)<br>
+<br>
+## Checklist<br>
+- [x] Code follows project style guidelines<br>
+- [x] Database schema is documented<br>
+- [x] SQL files are included<br>
+- [x] .gitignore properly configured<br>
+- [x] requirements.txt is up to date<br>
+- [x] No sensitive data committed<br>
+- [x] Documentation is complete<br>
+- [x] Code is tested and working<br>
+<br>
+---<br>
+<br>
+**Contributor:** @yourUsername (Your Full Name)<br>
+**Date:** January 15, 2025<br>
+**Time Spent:** ~3 days</code>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">7</div>
+                        <div class="step-title">Add Labels and Assignees (Optional)</div>
+                    </div>
+                    
+                    <ul>
+                        <li>On the right sidebar, you can add:
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li><strong>Reviewers:</strong> Select team lead or senior developer</li>
+                                <li><strong>Assignees:</strong> Assign yourself</li>
+                                <li><strong>Labels:</strong> Add tags like "feature", "database", "documentation"</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">8</div>
+                        <div class="step-title">Create Pull Request</div>
+                    </div>
+                    
+                    <ul>
+                        <li>Review everything one more time</li>
+                        <li>Click green button <strong>"Create pull request"</strong></li>
+                        <li>You'll be redirected to the PR page</li>
+                    </ul>
+                    
+                    <div class="success-box">
+                        <strong>🎉 Congratulations!</strong>
+                        Your Pull Request is now submitted! The approver will be notified automatically.
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">9</div>
+                        <div class="step-title">After Creating PR</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>What happens next:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>✅ Approver receives notification</li>
+                            <li>✅ They will review your code</li>
+                            <li>✅ They may add comments or request changes</li>
+                            <li>✅ You can update your PR by pushing more commits</li>
+                            <li>✅ Once approved, they will merge your code</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Responding to Review Comments:</strong>
+                        <div class="code-block" style="margin-top: 10px;">
+                            <code><span class="code-comment"># If reviewer requests changes:</span><br>
+<br>
+<span class="code-comment"># 1. Make the requested changes in your local code</span><br>
+nano backend/main.py  # edit files<br>
+<br>
+<span class="code-comment"># 2. Commit and push</span><br>
+git add .<br>
+git commit -m "fix: Address review comments - Update error handling"<br>
+git push origin main<br>
+<br>
+<span class="code-comment"># 3. PR automatically updates! No need to create new PR</span></code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 11: Approver Section -->
+            
+            <div class="section">
+                <span class="role-badge badge-admin">✅ APPROVER / REVIEWER</span>
+                <h2>Section 11: Code Review & Merge Process</h2>
+                
+                <div class="info-box">
+                    <strong>📌 For Project Leads and Senior Developers:</strong>
+                    This section explains how to review Pull Requests and merge code from team members into the organization repository.
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Receive Pull Request Notification</div>
+                    </div>
+                    
+                    <ul>
+                        <li>You'll receive email notification: <strong>"New pull request in sampurna-financial/chatbot-builder-platform"</strong></li>
+                        <li>GitHub notification bell (top-right) will show unread notification</li>
+                        <li>Organization repository will show badge: <strong>"Pull requests (1)"</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Open Pull Request</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Navigate to PR:</div>
+                        <ul>
+                            <li>Go to organization repository: <code>https://github.com/sampurna-financial/chatbot-builder-platform</code></li>
+                            <li>Click <strong>"Pull requests"</strong> tab at the top</li>
+                            <li>You'll see list of open PRs</li>
+                            <li>Click on the PR title to open it</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Review PR Details</div>
+                    </div>
+                    
+                    <div class="checklist">
+                        <div class="checklist-item"><strong>📝 Read the Description</strong> - Understand what was changed and why</div>
+                        <div class="checklist-item"><strong>👤 Check the Contributor</strong> - Who submitted this PR?</div>
+                        <div class="checklist-item"><strong>📊 Check the Stats</strong> - How many files changed? Lines added/removed?</div>
+                        <div class="checklist-item"><strong>🏷️ Review Labels</strong> - Is it properly tagged?</div>
+                        <div class="checklist-item"><strong>✅ Check CI Status</strong> - Are automated tests passing? (if configured)</div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Review Changed Files</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Click "Files changed" Tab</div>
+                        <p>This shows ALL code changes in a diff view (red = deleted, green = added)</p>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">What to Check:</div>
+                        <div class="checklist">
+                            <div class="checklist-item">
+                                <strong>❌ No venv/ or __pycache__/ files</strong>
+                                <div class="code-block" style="margin-top: 5px;">
+                                    <code><span class="code-comment"># Search in Files changed:</span><br>
+<span class="code-comment"># If you see venv/ or __pycache__/ → Request changes!</span></code>
+                                </div>
+                            </div>
+                            <div class="checklist-item">
+                                <strong>✅ .gitignore exists and is proper</strong>
+                                <ul style="margin-left: 20px; margin-top: 5px;">
+                                    <li>Check if .gitignore file is in the changes</li>
+                                    <li>Click on it to verify it includes venv/, __pycache__/, .env</li>
+                                </ul>
+                            </div>
+                            <div class="checklist-item">
+                                <strong>✅ requirements.txt is updated</strong>
+                                <ul style="margin-left: 20px; margin-top: 5px;">
+                                    <li>Check if requirements.txt has all necessary packages</li>
+                                    <li>Verify versions are pinned</li>
+                                </ul>
+                            </div>
+                            <div class="checklist-item">
+                                <strong>✅ Database files are included</strong>
+                                <ul style="margin-left: 20px; margin-top: 5px;">
+                                    <li>Look for database/schema.sql</li>
+                                    <li>Check database/sample_data.sql</li>
+                                    <li>Verify SQL syntax is correct</li>
+                                </ul>
+                            </div>
+                            <div class="checklist-item">
+                                <strong>❌ No .env files with secrets</strong>
+                                <ul style="margin-left: 20px; margin-top: 5px;">
+                                    <li>Should have .env.example (safe)</li>
+                                    <li>Should NOT have .env (contains secrets)</li>
+                                </ul>
+                            </div>
+                            <div class="checklist-item">
+                                <strong>✅ Code quality</strong>
+                                <ul style="margin-left: 20px; margin-top: 5px;">
+                                    <li>Proper indentation and formatting</li>
+                                    <li>Meaningful variable names</li>
+                                    <li>Comments for complex logic</li>
+                                    <li>No hardcoded passwords or API keys</li>
+                                </ul>
+                            </div>
+                            <div class="checklist-item">
+                                <strong>✅ Proper folder structure</strong>
+                                <ul style="margin-left: 20px; margin-top: 5px;">
+                                    <li>Code organized in correct folders</li>
+                                    <li>__init__.py files for Python packages</li>
+                                </ul>
+                            </div>
+                            <div class="checklist-item">
+                                <strong>✅ Documentation</strong>
+                                <ul style="margin-left: 20px; margin-top: 5px;">
+                                    <li>README updated if needed</li>
+                                    <li>Database schema documented</li>
+                                    <li>API endpoints documented</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <div class="step-title">Add Review Comments</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Inline Comments (For specific lines):</div>
+                        <ul>
+                            <li>In "Files changed" tab, hover over any line number</li>
+                            <li>Click the <strong>blue "+" button</strong> that appears</li>
+                            <li>Type your comment</li>
+                            <li>Click <strong>"Add single comment"</strong> or <strong>"Start a review"</strong></li>
+                        </ul>
+                        
+                        <div class="info-box" style="margin-top: 10px;">
+                            <strong>Example Comments:</strong>
+                            <ul style="margin-top: 5px;">
+                                <li>✅ "Great work on the database schema! Very well organized."</li>
+                                <li>💡 "Consider adding an index on the email column for better performance."</li>
+                                <li>❓ "Can you explain why you chose this approach?"</li>
+                                <li>⚠️ "This file should not be committed. Please add to .gitignore."</li>
+                                <li>🔧 "Typo here: 'recieve' should be 'receive'"</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">General Comments:</div>
+                        <ul>
+                            <li>Go to <strong>"Conversation"</strong> tab</li>
+                            <li>Scroll to bottom</li>
+                            <li>Type comment in the text box</li>
+                            <li>Click <strong>"Comment"</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">6</div>
+                        <div class="step-title">Submit Your Review</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Three Review Options:</div>
+                        
+                        <div class="success-box">
+                            <strong>✅ Approve</strong>
+                            <p style="margin-top: 5px;">Code looks good, ready to merge!</p>
+                        </div>
+                        
+                        <div class="info-box">
+                            <strong>💬 Comment</strong>
+                            <p style="margin-top: 5px;">General feedback without approval/rejection. Use for minor suggestions.</p>
+                        </div>
+                        
+                        <div class="warning-box">
+                            <strong>🔄 Request Changes</strong>
+                            <p style="margin-top: 5px;">Issues found that must be fixed before merging. Team member must address these.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">How to Submit Review:</div>
+                        <ul>
+                            <li>Click <strong>"Review changes"</strong> button (top-right of Files changed tab)</li>
+                            <li>Write a summary comment</li>
+                            <li>Select one of the three options above</li>
+                            <li>Click <strong>"Submit review"</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">7</div>
+                        <div class="step-title">Request Changes (If Needed)</div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>Common Issues to Request Changes For:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>❌ venv/ folder is committed</li>
+                            <li>❌ .env file with secrets is committed</li>
+                            <li>❌ __pycache__/ folders are included</li>
+                            <li>❌ No .gitignore file</li>
+                            <li>❌ requirements.txt is missing</li>
+                            <li>❌ Database SQL files have syntax errors</li>
+                            <li>❌ Hardcoded passwords or API keys in code</li>
+                            <li>❌ Poor code quality or no comments</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="margin-top: 15px;"><strong>Example Request Changes Comment:</strong></p>
+                    <div class="code-block">
+                        <code>Thanks for the submission! I found a few issues that need to be addressed:<br>
+<br>
+1. ⚠️ The venv/ folder is committed. Please remove it:<br>
+   ```bash<br>
+   git rm -r --cached venv/<br>
+   git commit -m "Remove venv from repository"<br>
+   git push origin main<br>
+   ```<br>
+<br>
+2. 📝 Missing .gitignore file. Please add one with at minimum:<br>
+   - venv/<br>
+   - __pycache__/<br>
+   - .env<br>
+<br>
+3. 🔧 In backend/main.py line 45, there's a typo: "recieve" → "receive"<br>
+<br>
+4. 💡 Consider adding comments to explain the flow builder logic in chatbot_engine.py<br>
+<br>
+Once these are fixed, I'll approve! Great work overall! 🎉</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">8</div>
+                        <div class="step-title">Approve Pull Request</div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">When to Approve:</div>
+                        <ul>
+                            <li>✅ All requested changes have been made</li>
+                            <li>✅ No venv/ or cache files</li>
+                            <li>✅ .gitignore is properly configured</li>
+                            <li>✅ Code quality is good</li>
+                            <li>✅ Database files are included and correct</li>
+                            <li>✅ Documentation is adequate</li>
+                            <li>✅ No security issues</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Submit Approval:</div>
+                        <ul>
+                            <li>Go to "Files changed" tab</li>
+                            <li>Click <strong>"Review changes"</strong></li>
+                            <li>Write positive feedback comment</li>
+                            <li>Select <strong>"Approve"</strong></li>
+                            <li>Click <strong>"Submit review"</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <p style="margin-top: 15px;"><strong>Example Approval Comment:</strong></p>
+                    <div class="code-block">
+                        <code>Excellent work! 🎉<br>
+<br>
+✅ Code quality is great<br>
+✅ Database schema is well-designed<br>
+✅ .gitignore properly configured<br>
+✅ No venv or sensitive files committed<br>
+✅ Documentation is comprehensive<br>
+✅ SQL files are clean and well-structured<br>
+<br>
+All issues addressed. Ready to merge!<br>
+<br>
+Great job on your first contribution to the chatbot platform! 👏</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">9</div>
+                        <div class="step-title">Merge Pull Request (Squash and Merge)</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>📌 Why Squash and Merge?</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Combines all commits into ONE clean commit</li>
+                            <li>Keeps main branch history clean and readable</li>
+                            <li>Easier to track features and rollback if needed</li>
+                            <li>Standard practice in professional teams</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Steps to Merge:</div>
+                        <ul>
+                            <li>Go back to <strong>"Conversation"</strong> tab</li>
+                            <li>Scroll to bottom of the PR</li>
+                            <li>You'll see a green button</li>
+                            <li>Click the dropdown arrow next to the button</li>
+                            <li>Select <strong>"Squash and merge"</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Edit Commit Message:</div>
+                        <p>A popup will appear. Edit the commit message to be clear and professional:</p>
+                        
+                        <div class="code-block">
+                            <code><span class="code-comment"># Title (first line):</span><br>
+feat: Add no-code chatbot builder platform (#1)<br>
+<br>
+<span class="code-comment"># Description (detailed):</span><br>
+Implemented complete chatbot builder platform with:<br>
+<br>
+**Backend:**<br>
+- FastAPI-based REST API<br>
+- Chatbot engine with flow execution<br>
+- User authentication system<br>
+- NLP service integration<br>
+- CRUD operations for chatbots and flows<br>
+<br>
+**Database:**<br>
+- Complete schema with 8 tables<br>
+- Relationships and foreign keys<br>
+- Indexes for performance<br>
+- Sample data for testing<br>
+- Migration files included<br>
+<br>
+**Tables:** users, chatbots, flows, nodes, conversations,<br>
+messages, integrations, analytics<br>
+<br>
+**Infrastructure:**<br>
+- Proper folder structure<br>
+- .gitignore configured (venv excluded)<br>
+- requirements.txt with all dependencies<br>
+- Comprehensive documentation<br>
+<br>
+**Documentation:**<br>
+- Database schema docs<br>
+- API reference<br>
+- Architecture overview<br>
+<br>
+Contributor: @rahul-sfspl (Rahul Kumar)<br>
+Reviewed-by: @senior-dev<br>
+Date: January 15, 2025</code>
+                        </div>
+                    </div>
+                    
+                    <div class="substep">
+                        <div class="substep-title">Confirm Merge:</div>
+                        <ul>
+                            <li>Review the commit message</li>
+                            <li>Click green button <strong>"Confirm squash and merge"</strong></li>
+                            <li>PR will be merged!</li>
+                            <li>Optional: Delete the contributor's branch (GitHub will prompt)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="success-box">
+                        <strong>🎉 Success!</strong>
+                        The code is now merged into the organization's main branch! The contributor's work is officially part of the project.
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">10</div>
+                        <div class="step-title">After Merging</div>
+                    </div>
+                    
+                    <ul>
+                        <li>✅ PR status changes to <strong>"Merged"</strong> with purple label</li>
+                        <li>✅ Code is now in organization's main branch</li>
+                        <li>✅ Contributor receives notification</li>
+                        <li>✅ Other team members can now pull the changes</li>
+                    </ul>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Good Practice:</strong>
+                        Leave a thank you comment after merging:
+                        <div class="code-block" style="margin-top: 10px;">
+                            <code>Merged! 🎉<br>
+<br>
+Thank you @rahul-sfspl for this excellent contribution!<br>
+The chatbot platform foundation is now in place.<br>
+<br>
+Team members: Please pull the latest changes:<br>
+```bash<br>
+git pull origin main<br>
+```</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Reference Section -->
+            
+            <div class="section">
+                <h2>⚡ Quick Reference Commands</h2>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">📋</div>
+                        <div class="step-title">Daily Workflow Cheat Sheet</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># ============================================</span><br>
+<span class="code-comment"># MORNING: Start Your Work</span><br>
+<span class="code-comment"># ============================================</span><br>
+<br>
+<span class="code-comment"># 1. Open Terminal (Ctrl + Alt + T)</span><br>
+<br>
+<span class="code-comment"># 2. Go to project</span><br>
+cd ~/Projects/chatbot-builder-platform_yourName<br>
+<br>
+<span class="code-comment"># 3. Pull latest changes</span><br>
+git pull origin main<br>
+<br>
+<span class="code-comment"># 4. Activate venv</span><br>
+source venv/bin/activate<br>
+<br>
+<span class="code-comment"># 5. Start coding! 💻</span><br>
+<br>
+<span class="code-comment"># ============================================</span><br>
+<span class="code-comment"># DURING WORK: If you install new package</span><br>
+<span class="code-comment"># ============================================</span><br>
+<br>
+pip install package-name<br>
+pip freeze > requirements.txt<br>
+<br>
+<span class="code-comment"># ============================================</span><br>
+<span class="code-comment"># END OF DAY: Save Your Work</span><br>
+<span class="code-comment"># ============================================</span><br>
+<br>
+<span class="code-comment"># 1. Check what changed</span><br>
+git status<br>
+<br>
+<span class="code-comment"># 2. Add files</span><br>
+git add .<br>
+<br>
+<span class="code-comment"># 3. Commit with message</span><br>
+git commit -m "feat: Add your feature description"<br>
+<br>
+<span class="code-comment"># 4. Push to GitHub</span><br>
+git push origin main<br>
+<br>
+<span class="code-comment"># 5. Create Pull Request (on GitHub website)</span><br>
+<br>
+<span class="code-comment"># 6. Deactivate venv</span><br>
+deactivate</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">🔧</div>
+                        <div class="step-title">Essential Git Commands</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Check status</span><br>
+git status<br>
+<br>
+<span class="code-comment"># View commit history</span><br>
+git log --oneline<br>
+<br>
+<span class="code-comment"># See what changed in files</span><br>
+git diff<br>
+<br>
+<span class="code-comment"># Undo last commit (keeps changes)</span><br>
+git reset HEAD~1<br>
+<br>
+<span class="code-comment"># Discard changes in file (BE CAREFUL!)</span><br>
+git checkout -- filename.py<br>
+<br>
+<span class="code-comment"># Remove file from staging</span><br>
+git reset HEAD filename.py<br>
+<br>
+<span class="code-comment"># View remote repository URL</span><br>
+git remote -v<br>
+<br>
+<span class="code-comment"># Check which branch you're on</span><br>
+git branch</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">🐍</div>
+                        <div class="step-title">Python Virtual Environment Commands</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Create venv</span><br>
+python3 -m venv venv<br>
+<br>
+<span class="code-comment"># Activate venv</span><br>
+source venv/bin/activate<br>
+<br>
+<span class="code-comment"># Deactivate venv</span><br>
+deactivate<br>
+<br>
+<span class="code-comment"># Install package</span><br>
+pip install package-name<br>
+<br>
+<span class="code-comment"># Install from requirements.txt</span><br>
+pip install -r requirements.txt<br>
+<br>
+<span class="code-comment"># Update requirements.txt</span><br>
+pip freeze > requirements.txt<br>
+<br>
+<span class="code-comment"># List installed packages</span><br>
+pip list<br>
+<br>
+<span class="code-comment"># Uninstall package</span><br>
+pip uninstall package-name</code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">🗄️</div>
+                        <div class="step-title">Database Commands</div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># MySQL/MariaDB</span><br>
+<span class="code-comment"># ============================================</span><br>
+<br>
+<span class="code-comment"># Create database</span><br>
+mysql -u root -p -e "CREATE DATABASE chatbot_db;"<br>
+<br>
+<span class="code-comment"># Run schema file</span><br>
+mysql -u root -p chatbot_db < database/schema.sql<br>
+<br>
+<span class="code-comment"># Load sample data</span><br>
+mysql -u root -p chatbot_db < database/sample_data.sql<br>
+<br>
+<span class="code-comment"># Login to database</span><br>
+mysql -u root -p chatbot_db<br>
+<br>
+<span class="code-comment"># PostgreSQL</span><br>
+<span class="code-comment"># ============================================</span><br>
+<br>
+<span class="code-comment"># Create database</span><br>
+psql -U postgres -c "CREATE DATABASE chatbot_db;"<br>
+<br>
+<span class="code-comment"># Run schema file</span><br>
+psql -U postgres -d chatbot_db -f database/schema.sql<br>
+<br>
+<span class="code-comment"># Login to database</span><br>
+psql -U postgres -d chatbot_db</code>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Troubleshooting Section -->
+            
+            <div class="section">
+                <h2>🔧 Common Issues & Solutions</h2>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Problem: Accidentally Committed venv</div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>Symptoms:</strong> Git status shows 1000+ files, git push takes forever, venv/ appears in git ls-files
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Solution:</span><br>
+<br>
+<span class="code-comment"># 1. Remove venv from Git (keeps local copy)</span><br>
+git rm -r --cached venv/<br>
+<br>
+<span class="code-comment"># 2. Make sure .gitignore has venv/</span><br>
+echo "venv/" >> .gitignore<br>
+<br>
+<span class="code-comment"># 3. Commit the removal</span><br>
+git add .gitignore<br>
+git commit -m "Remove venv from repository and update .gitignore"<br>
+<br>
+<span class="code-comment"># 4. Push</span><br>
+git push origin main<br>
+<br>
+<span class="code-comment"># 5. Verify</span><br>
+git ls-files | grep venv<br>
+<span class="code-comment"># Should be empty ✅</span></code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Problem: Permission Denied (SSH)</div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>Error:</strong> "Permission denied (publickey)" when pushing/pulling
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Solution:</span><br>
+<br>
+<span class="code-comment"># 1. Check if SSH key exists</span><br>
+ls -la ~/.ssh/<br>
+<span class="code-comment"># Should see id_ed25519 and id_ed25519.pub</span><br>
+<br>
+<span class="code-comment"># 2. Test SSH connection</span><br>
+ssh -T git@github.com<br>
+<span class="code-comment"># Should say: "Hi username! You've successfully authenticated"</span><br>
+<br>
+<span class="code-comment"># 3. If not working, regenerate SSH key</span><br>
+ssh-keygen -t ed25519 -C "your-email@sampurna.co.in"<br>
+<br>
+<span class="code-comment"># 4. Copy new key</span><br>
+cat ~/.ssh/id_ed25519.pub<br>
+<br>
+<span class="code-comment"># 5. Add to GitHub (Settings → SSH Keys)</span></code>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Problem: Merge Conflicts</div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>Error:</strong> "CONFLICT (content): Merge conflict in filename.py"
+                    </div>
+                    
+                    <div class="code-block">
+                        <code><span class="code-comment"># Solution:</span><br>
+<br>
+<span class="code-comment"># 1. Open conflicted file in editor</span><br>
+nano filename.py<br>
+<br>
+<span class="code-comment"># 2. Look for conflict markers:</span><br>
+<span class="code-comment"># <<<<<<< HEAD</span><br>
+<span class="code-comment"># Your changes</span>            
+            <!-- Section 9: Making Commits & Pushing -->
+            <div class="section">
+                <span class="role-badge badge-user">💾 COMMIT & PUSH</span>
+                <h2>Section 9: Making Commits & Pushing Code</h2>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Understanding Git Workflow</div>
+                    </div>
+            
+        </div>
+    </div>
+    </body>
+</html>
